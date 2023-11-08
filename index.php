@@ -1,4 +1,31 @@
-<?php ?>
+<?php
+
+include 'connect.php';
+
+if(isset($_POST['submit'])){
+
+    $username=$_POST['username'];
+    $password=$_POST['password'];
+
+    $result= mysqli_query($koneksi, "select* from login where username='$username' and password='$password'");
+
+    $check= mysqli_num_rows($result);
+    if($check> 0){
+        $_SESSION['username']= ['username'];
+        header("Location:dashboard.php");
+    }
+    else{
+        echo "<script>
+            alert('username / password yang anda masukkan salah');
+        </script>";
+    }
+
+
+} 
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +42,7 @@
         <div class="col-12 col-sm-8 col-md-6 m-auto">
             <div class="card">
                 <div class="card-body">
-                <form id="login_form" class="form_class" method="post">
+                <form id="login_form" class="form_class" method="post" action="index.php">
                 <h4>Login</h4>
                 <br>
                 <label>Username:</label>
