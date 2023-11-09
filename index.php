@@ -7,7 +7,7 @@ if(isset($_POST['submit'])){
     $username=$_POST['username'];
     $password=$_POST['password'];
 
-    $result= mysqli_query($koneksi, "select* from login where username='$username' and password='$password'");
+    $result= mysqli_query($conn, "select* from login where username='$username' and password='$password'");
 
     $check= mysqli_num_rows($result);
     if($check> 0){
