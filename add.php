@@ -7,10 +7,8 @@ if(isset($_POST['submit'])){
   $name=$_POST['name'];
   $date=$_POST['date'];
 
-  $idbook= mysqli_query($conn,"SELECT id FROM `books`WHERE name='$title'");
-  $noInduk= mysqli_query($conn,"SELECT noInduk FROM student WHERE name='$name'");
-
-  mysqli_query($conn,"INSERT INTO `borrow` (`idBook`,`noInduk`,`date`,`dateBorrow`) VALUES ");
+  $idbook= mysqli_query($conn,"SELECT id");
+  $noInduk= mysqli_query($conn,"SELECT id WHERE name='$name'");
 
 }
 
@@ -73,7 +71,7 @@ if(isset($_POST['submit'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-library</span>
+      <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
     <!-- Sidebar -->
@@ -82,7 +80,7 @@ if(isset($_POST['submit'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
+          <a href="#" class="d-block">Admin</a>
         </div>
       </div>
 
@@ -94,41 +92,30 @@ if(isset($_POST['submit'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-          <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-              <i class="right fas fa-angle-left"></i>
+
               </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Add Books
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="update.php" class="nav-link">
-                <p>
-                  Update Books
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="delete.php" class="nav-link">
-                <p>
-                  Delete Books
-                </p>
-              </a>
-            </li>
+            </a>
+            <a href="" class="nav-link">
+              <p>
+                Add Books
+              </p>
+            </a>
+            <a href="" class="nav-link">
+              <p>
+                Update Books
+              </p>
+            </a>
+            <a href="" class="nav-link">
+              <p>
+                Delete Books
+              </p>
+            </a>
 
-            </ul>
-          </li>
-
-          <li class="nav-item">
+            <li class="nav-item">
         <a href="" class="nav-link">
           <p>
             Student
@@ -158,8 +145,7 @@ if(isset($_POST['submit'])){
             </a>
           </li>
         </ul>
-      </li>
-          
+      </li>    
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -194,8 +180,10 @@ if(isset($_POST['submit'])){
             <input type="text" name="title" class="form-control my-3 py-2" required>
             <label for="title">Name</label>
             <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Date</label>
-            <input type="date" name="date" class="form-control my-3 py-2" required>
+            <label for="title">Publication</label>
+            <input type="text" name="publication" class="form-control my-3 py-2" required>
+            <label for="title">Edition</label>
+            <input type="text" name="edition" class="form-control my-3 py-2" required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>

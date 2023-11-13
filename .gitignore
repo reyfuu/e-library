@@ -1,5 +1,5 @@
 plugins/
-ode_modules/
+node_modules/
 docs/
 dist/
 build/
