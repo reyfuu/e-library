@@ -6,11 +6,14 @@ if(isset($_POST['submit'])){
   $title= $_POST['title'];
   $name=$_POST['name'];
   $date=$_POST['date'];
+  $datereturn= strtotime("+7 day", $date);
 
+
+  
   $idbook= mysqli_query($conn,"SELECT id FROM `books`WHERE name='$title'");
   $noInduk= mysqli_query($conn,"SELECT noInduk FROM student WHERE name='$name'");
 
-  mysqli_query($conn,"INSERT INTO `borrow` (`idBook`,`noInduk`,`date`,`dateBorrow`) VALUES ");
+  mysqli_query($conn,"INSERT INTO `borrow` ('idBook','noInduk','dateBorrow','dateReturn','status') VALUES ('$idbook','$noInnduk','$date','$dateReturn','unavailable')");
 
 }
 
@@ -58,9 +61,7 @@ if(isset($_POST['submit'])){
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="dashboard.php" class="nav-link">Home</a>
-      </li>
+
 
     </ul>
 
