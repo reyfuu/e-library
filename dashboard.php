@@ -2,20 +2,10 @@
 
 include 'connect.php';
 
-if(isset($_POST['submit'])){
-  $title= $_POST['title'];
-  $name=$_POST['name'];
-  $date=$_POST['date'];
-  $datereturn= strtotime("+7 day", $date);
-
 
   
-  $idbook= mysqli_query($conn,"SELECT id FROM `books`WHERE name='$title'");
-  $noInduk= mysqli_query($conn,"SELECT noInduk FROM student WHERE name='$name'");
+  $result= mysqli_query($conn,"SELECT * FROM borrow ");
 
-  mysqli_query($conn,"INSERT INTO `borrow` ('idBook','noInduk','dateBorrow','dateReturn','status') VALUES ('$idbook','$noInnduk','$date','$dateReturn','unavailable')");
-
-}
 
 ?>
 <!DOCTYPE html>
@@ -105,26 +95,20 @@ if(isset($_POST['submit'])){
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
+              <a href="borrow.php" class="nav-link">
+                <p>
+                  Borrow Book
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="add.php" class="nav-link">
                 <p>
                   Add Books
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="update.php" class="nav-link">
-                <p>
-                  Update Books
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="delete.php" class="nav-link">
-                <p>
-                  Delete Books
-                </p>
-              </a>
-            </li>
+
 
             </ul>
           </li>
@@ -186,26 +170,32 @@ if(isset($_POST['submit'])){
  
       <div class="container ">
         <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="container">
-          <div class="card">
-            <div class="card-body">
-            <form action="dashboard.php" method="post">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control my-3 py-2" required>
-            <label for="title">Name</label>
-            <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Date</label>
-            <input type="date" name="date" class="form-control my-3 py-2" required>
-            <div class="text-center">
-            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
-            </div>
-
-          </form>
-            </div>
-          </div>
- 
-          </div>
+          <table border="1" cellpadding="10" class="table table-bordered table-hover">
+          <?php while($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+              <td>No</td>
+              <td>Action</td>
+              <td>Id Book</td>
+              <td>No Induk</td>
+              <td>Date Borrow</td>
+              <td>Date Return</td>
+              <td>status</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>
+                <a href="update.php?id=<?=  $row['id']?>" class="nav-link">Update</a>
+                
+                
+              </td>
+              <td><?= $row['idbook']; ?></td>
+              <td><?= $row['noInduk']; ?></td>
+              <td><?= $row['dateBorrow']; ?></td>
+              <td><?= $row['dateReturn']; ?></td>
+              <td><?= $row['status']; ?></td>
+            </tr>
+            <?php endwhile; ?>
+            </table>
         </div>
 
        

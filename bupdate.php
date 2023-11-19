@@ -4,25 +4,19 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
+$result= mysqli_query($conn,"SELECT * FROM `books` WHERE idbook='$id'");
 
 
 if(isset($_POST['submit'])){
 
-    $dateReturn=$_POST['dateReturn'];
-    $status=$_POST['status'];
-    $id= $_POST['id'];
-    try{
-      $result= mysqli_query($conn, "UPDATE borrow SET dateReturn='$dateReturn', status='$status'
-      where id='$id'");
-    }catch (mysqli_sql_exception $e){
-      var_dump($e);
-      exit;
-    }
-  
+    $username=$_POST['username'];
+    $password=$_POST['password'];
 
-    $check= mysqli_affected_rows($conn);
+    $result= mysqli_query($conn, "select* from login where username='$username' and password='$password'");
+
+    $check= mysqli_num_rows($result);
     if($check> 0){
-       
+        $_SESSION['username']= ['username'];
         header("Location:dashboard.php");
     }
     else{
@@ -61,15 +55,20 @@ if(isset($_POST['submit'])){
     <div class="card-body">
    
 
-      <form action="update.php" method="post">
-    
-          <input type="hidden" name="id" value="<?= $id ?>">
-          <label for="title">Date Return</label>
-          <input type="date" class="form-control"  name="dateReturn" >
-    
+      <form action="bupdate.php" method="post">
+        <?php while($row= mysqli_fetch_assoc($result)):  ?>
+          
+          <label for="title">Title</label>
+          <input type="text" class="form-control"  name="title" value="<?= $row["title"];?>">
+          <label for="name">Name</label>
+          <input type="text" class="form-control"  name="name" value="<?= $row['name']; ?>">
+          <label for="publication">Publication Year</label>
+          <input type="text" class="form-control"  name="publication" value="<?= $row['publication year']; ?>">
+          <label for="edition">Edition</label>
+          <input type="text" class="form-control"  name="edition" value="<?= $row['edition'] ;?>">
           <label for="status">Status</label>
-          <input type="text" class="form-control"  name="status" >
-       
+          <input type="text" class="form-control"  name="status" value="<?= $row['status'] ;?>">
+          <?php endwhile; ?>
         </div>
         <div class="row">
 

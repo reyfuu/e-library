@@ -2,15 +2,39 @@
 
 include 'connect.php';
 
+
+
 if(isset($_POST['submit'])){
   $title= $_POST['title'];
   $name=$_POST['name'];
-  $publication=$_POST['publication'];
-  $edition=$_POST['edition'];
+  $date=$_POST['date'];
+  $dateReturn= strtotime($date);
+  $dateReturn= strtotime("+7 day", $dateReturn);
+  $dateReturn= date('Y/m/d', $dateReturn);
 
 
-  mysqli_query($conn,"INSERT INTO `books` (`title`,`name`,`publication year`,`edition`,`status`) VALUES ('$title','$name','$publication','$edition','available')");
- 
+  $idbookTemp= null;
+  $noIndukTemp= null;
+  
+  $idbook= mysqli_query($conn,"SELECT idbook FROM books WHERE title='$title'");
+  $noInduk= mysqli_query($conn,"SELECT noInduk FROM student WHERE name='$name'");
+
+
+  while($row= mysqli_fetch_array($idbook)){
+    $idbookTemp=$row['idbook'];
+  }
+  var_dump($idbookTemp);
+  while($row1=mysqli_fetch_array($noInduk)){
+    $noIndukTemp=$row1['noInduk'];
+  }
+try{
+  mysqli_query($conn,"INSERT INTO `borrow` (`idbook`,`noInduk`,`dateBorrow`,`dateReturn`,`status`) VALUES ('$idbookTemp','$noIndukTemp','$date','$dateReturn','unavailable')");
+}catch (mysqli_sql_exception $e){
+  var_dump($e);
+  exit;
+}
+  
+
   if(mysqli_affected_rows($conn)> 0){
     header("Location: dashboard.php");
   }else{
@@ -76,7 +100,7 @@ if(isset($_POST['submit'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">E-library</span>
     </a>
 
     <!-- Sidebar -->
@@ -85,7 +109,7 @@ if(isset($_POST['submit'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
+          <a href="dashboard.php" class="d-block">Admin</a>
         </div>
       </div>
 
@@ -97,29 +121,30 @@ if(isset($_POST['submit'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-          <li class="nav-item menu-open">
-            <a href="dashboard.php" class="nav-link active">
+               <li class="nav-item menu-open">
+          <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="borrow.php" class="nav-link">
                 <p>
-                  Dashboard
-                <i class="right fas fa-angle-left"></i>
+                  Borrow Book
                 </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="borrow.php" class="nav-link">
-                  <p>
-                    Borrow Book
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="add.php" class="nav-link">
-                  <p>
-                    Add Books
-                  </p>
-                </a>
-              </li>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Add Books
+                </p>
+              </a>
+            </li>
+
 
             </ul>
           </li>
@@ -154,7 +179,8 @@ if(isset($_POST['submit'])){
             </a>
           </li>
         </ul>
-          </li>
+      </li>
+          
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -168,7 +194,7 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Add Books</h1>
+            <h1 class="m-0">Dashboard</h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -184,15 +210,13 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="add.php" method="post">
+            <form action="dashboard.php" method="post">
             <label for="title">Title</label>
             <input type="text" name="title" class="form-control my-3 py-2" required>
             <label for="title">Name</label>
             <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Publication</label>
-            <input type="text" name="publication" class="form-control my-3 py-2" required>
-            <label for="title">Edition</label>
-            <input type="text" name="edition" class="form-control my-3 py-2" required>
+            <label for="title">Date</label>
+            <input type="date" name="date" class="form-control my-3 py-2" required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>

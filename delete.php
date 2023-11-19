@@ -88,31 +88,47 @@ if(isset($_POST['submit'])){
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="borrow.php" class="nav-link">
+                    <p>
+                      Borrow Book
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="add.php" class="nav-link">
+                    <p>
+                      Add Books
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="update.php" class="nav-link">
+                    <p>
+                      Update Books
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="delete.php" class="nav-link">
+                    <p>
+                      Delete Books
+                    </p>
+                  </a>
+                </li>
+            </ul>
+          </li>
 
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-
-              </p>
-            </a>
-            <a href="" class="nav-link">
-              <p>
-                Add Books
-              </p>
-            </a>
-            <a href="" class="nav-link">
-              <p>
-                Update Books
-              </p>
-            </a>
-            <a href="" class="nav-link">
-              <p>
-                Delete Books
-              </p>
-            </a>
-
-            <li class="nav-item">
+          <li class="nav-item">
         <a href="" class="nav-link">
           <p>
             Student
