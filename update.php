@@ -27,7 +27,7 @@ if(isset($_POST['submit'])){
     }
     else{
         echo "<script>
-            alert('username / password yang anda masukkan salah');
+            alert('data gagal diupdate');
         </script>";
     }
 

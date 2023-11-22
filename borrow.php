@@ -49,7 +49,7 @@ try{
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard</title>
+  <title> Borrow</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -121,65 +121,34 @@ try{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-               <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
+          <li class="nav-item menu-open">
+          <a href="dashboard.php" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-              <i class="right fas fa-angle-left"></i>
+
               </p>
           </a>
-          <ul class="nav nav-treeview">
+
+
             <li class="nav-item">
-              <a href="borrow.php" class="nav-link">
+              <a href="books.php" class="nav-link">
                 <p>
-                  Borrow Book
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Add Books
+                  Books
                 </p>
               </a>
             </li>
 
-
-            </ul>
           </li>
 
           <li class="nav-item">
-        <a href="" class="nav-link">
-          <p>
-            Student
-            <i class="fas fa-angle-left right"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="" class="nav-link">
+          <a href="student.php" class="nav-link">
               <p>
-                Add Student
+               Student
+                
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Update Student
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Delete Student
-              </p>
-            </a>
-          </li>
-        </ul>
-      </li>
           
       </nav>
       <!-- /.sidebar-menu -->
@@ -210,7 +179,7 @@ try{
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="dashboard.php" method="post">
+            <form action="borrow.php" method="post">
             <label for="title">Title</label>
             <input type="text" name="title" class="form-control my-3 py-2" required>
             <label for="title">Name</label>

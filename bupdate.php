@@ -9,19 +9,32 @@ $result= mysqli_query($conn,"SELECT * FROM `books` WHERE idbook='$id'");
 
 if(isset($_POST['submit'])){
 
-    $username=$_POST['username'];
-    $password=$_POST['password'];
+    $id=$_POST['id'];
+    $title=$_POST['title'];
+    $name=$_POST['name'];
+    $publication=$_POST['publication'];
+    $edition=$_POST['edition'];
+    $status=$_POST['status'];
 
-    $result= mysqli_query($conn, "select* from login where username='$username' and password='$password'");
+    try{
+      $result= mysqli_query($conn, "UPDATE books SET title='$title', name='$name', `publication year`='$publication', edition='$edition', status='$status'  WHERE idbook='$id'");
 
-    $check= mysqli_num_rows($result);
+    }catch (mysqli_sql_exception $e){
+      var_dump($e);
+      exit;
+    }
+
+
+   
+
+    $check= mysqli_affected_rows($conn);
     if($check> 0){
-        $_SESSION['username']= ['username'];
-        header("Location:dashboard.php");
+     
+        header("Location:books.php");
     }
     else{
         echo "<script>
-            alert('username / password yang anda masukkan salah');
+            alert('data gagal di update');
         </script>";
     }
 
@@ -36,7 +49,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Update</title>
+  <title>Update Book</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -56,6 +69,7 @@ if(isset($_POST['submit'])){
    
 
       <form action="bupdate.php" method="post">
+      <input type="hidden" name="id" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
           <label for="title">Title</label>

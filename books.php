@@ -2,15 +2,10 @@
 
 include 'connect.php';
 
-if(isset($_POST['submit'])){
-  $title= $_POST['title'];
-  $name=$_POST['name'];
-  $date=$_POST['date'];
 
-  $idbook= mysqli_query($conn,"SELECT id");
-  $noInduk= mysqli_query($conn,"SELECT id WHERE name='$name'");
+  
+  $result= mysqli_query($conn,"SELECT * FROM books ");
 
-}
 
 ?>
 <!DOCTYPE html>
@@ -18,7 +13,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard</title>
+  <title> Dashboard Books</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,6 +52,7 @@ if(isset($_POST['submit'])){
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
 
+
     </ul>
 
 
@@ -68,7 +64,7 @@ if(isset($_POST['submit'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">E-library</span>
     </a>
 
     <!-- Sidebar -->
@@ -77,7 +73,7 @@ if(isset($_POST['submit'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
+          <a href="dashboard.php" class="d-block">Admin</a>
         </div>
       </div>
 
@@ -88,77 +84,36 @@ if(isset($_POST['submit'])){
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <li class="nav-item menu-open">
-              <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+
+          <li class="nav-item menu-open">
+          <a href="dashboard.php" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+
+              </p>
+          </a>
+
+
+            <li class="nav-item">
+              <a href="books.php" class="nav-link">
                 <p>
-                  Dashboard
-                <i class="right fas fa-angle-left"></i>
+                  Books
                 </p>
               </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="borrow.php" class="nav-link">
-                    <p>
-                      Borrow Book
-                    </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="add.php" class="nav-link">
-                    <p>
-                      Add Books
-                    </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="update.php" class="nav-link">
-                    <p>
-                      Update Books
-                    </p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="delete.php" class="nav-link">
-                    <p>
-                      Delete Books
-                    </p>
-                  </a>
-                </li>
-            </ul>
+            </li>
+
           </li>
 
           <li class="nav-item">
-        <a href="" class="nav-link">
-          <p>
-            Student
-            <i class="fas fa-angle-left right"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="" class="nav-link">
+          <a href="student.php" class="nav-link">
               <p>
-                Add Student
+               Student
+                
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Update Student
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Delete Student
-              </p>
-            </a>
-          </li>
-        </ul>
-      </li>
+          
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -172,7 +127,10 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Delete Books</h1>
+            <ol class="breadcrumb float-sm-left">
+            <h1 class="m-0">Books</h1>&nbsp;&nbsp;&nbsp;
+            <a href="add.php"><button  class="btn btn-primary " >Add</button></a>
+            </ol>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -183,29 +141,37 @@ if(isset($_POST['submit'])){
     <!-- Main content -->
  
       <div class="container ">
+        
         <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="container">
-          <div class="card">
-            <div class="card-body">
-            <form action="dashboard.php" method="post">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control my-3 py-2" required>
-            <label for="title">Name</label>
-            <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Publication</label>
-            <input type="text" name="publication" class="form-control my-3 py-2" required>
-            <label for="title">Edition</label>
-            <input type="text" name="edition" class="form-control my-3 py-2" required>
-            <div class="text-center">
-            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
-            </div>
+          <table border="1" cellpadding="10" class="table table-bordered table-hover">
+          <tr>
+              <td>No</td>
+              <td>Action</td>
+              <td>Title</td>
+              <td>Name</td>
+              <td>Publication Year</td>
+              <td>Edition</td>
+              <td>status</td>
+            </tr>
+            <?php $i=1; ?>
+          <?php while($row = mysqli_fetch_assoc($result)): ?>
+   
+            <tr>
+              <td><?= $i; ?></td>
+              <td>
+                <a href="bupdate.php?id=<?=  $row['idbook'];?>" class="nav-link">Update</a>
 
-          </form>
-            </div>
-          </div>
- 
-          </div>
+                <a href="bdelete.php?id=<?= $row['idbook'];?>" class="nav-link">Delete</a>
+              </td>
+              <td><?= $row['title']; ?></td>
+              <td><?= $row['name']; ?></td>
+              <td><?= $row['publication year']; ?></td>
+              <td><?= $row['edition']; ?></td>
+              <td><?= $row['status']; ?></td>
+            </tr>
+            <?php $i++; ?>
+            <?php endwhile; ?>
+            </table>
         </div>
 
        

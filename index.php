@@ -11,7 +11,7 @@ if(isset($_POST['submit'])){
 
     $check= mysqli_num_rows($result);
     if($check> 0){
-        $_SESSION['username']= ['username'];
+
         header("Location:dashboard.php");
     }
     else{

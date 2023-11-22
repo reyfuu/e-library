@@ -4,7 +4,7 @@ include 'connect.php';
 
 
   
-  $result= mysqli_query($conn,"SELECT * FROM borrow ");
+  $result= mysqli_query($conn,"SELECT * FROM borrow WHERE status='unavailable'");
 
 
 ?>
@@ -86,64 +86,33 @@ include 'connect.php';
                with font-awesome or any other icon font library -->
 
           <li class="nav-item menu-open">
-          <a href="#" class="nav-link active">
+          <a href="dashboard.php" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-              <i class="right fas fa-angle-left"></i>
+
               </p>
           </a>
-          <ul class="nav nav-treeview">
+
+
             <li class="nav-item">
-              <a href="borrow.php" class="nav-link">
+              <a href="books.php" class="nav-link">
                 <p>
-                  Borrow Book
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Add Books
+                  Books
                 </p>
               </a>
             </li>
 
-
-            </ul>
           </li>
 
           <li class="nav-item">
-        <a href="" class="nav-link">
-          <p>
-            Student
-            <i class="fas fa-angle-left right"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="" class="nav-link">
+           <a href="student.php" class="nav-link">
               <p>
-                Add Student
+               Student
+                
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Update Student
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Delete Student
-              </p>
-            </a>
-          </li>
-        </ul>
-      </li>
           
       </nav>
       <!-- /.sidebar-menu -->
@@ -158,7 +127,11 @@ include 'connect.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <ol class="breadcrumb float-sm-left">
+            <h1 class="m-0">Dashboard</h1>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="borrow.php"><button  class="btn btn-primary " >Borrow</button></a>
+            </ol>
+
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -169,10 +142,10 @@ include 'connect.php';
     <!-- Main content -->
  
       <div class="container ">
+
         <!-- Small boxes (Stat box) -->
           <table border="1" cellpadding="10" class="table table-bordered table-hover">
-          <?php while($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
+          <tr>
               <td>No</td>
               <td>Action</td>
               <td>Id Book</td>
@@ -181,12 +154,14 @@ include 'connect.php';
               <td>Date Return</td>
               <td>status</td>
             </tr>
+            <?php $i=1; ?>
+          <?php while($row = mysqli_fetch_assoc($result)): ?>
+
             <tr>
-              <td>1</td>
+              <td><?= $i; ?></td>
               <td>
                 <a href="update.php?id=<?=  $row['id']?>" class="nav-link">Update</a>
-                
-                
+
               </td>
               <td><?= $row['idbook']; ?></td>
               <td><?= $row['noInduk']; ?></td>
@@ -194,6 +169,7 @@ include 'connect.php';
               <td><?= $row['dateReturn']; ?></td>
               <td><?= $row['status']; ?></td>
             </tr>
+            <?php $i++; ?>
             <?php endwhile; ?>
             </table>
         </div>

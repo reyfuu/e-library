@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
   mysqli_query($conn,"INSERT INTO `books` (`title`,`name`,`publication year`,`edition`,`status`) VALUES ('$title','$name','$publication','$edition','available')");
  
   if(mysqli_affected_rows($conn)> 0){
-    header("Location: dashboard.php");
+    header("Location: books.php");
   }else{
     echo "gagal";
     echo mysqli_error($conn);
@@ -25,7 +25,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard</title>
+  <title> Add Book</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -98,63 +98,34 @@ if(isset($_POST['submit'])){
                with font-awesome or any other icon font library -->
 
           <li class="nav-item menu-open">
-            <a href="dashboard.php" class="nav-link active">
+          <a href="dashboard.php" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+
+              </p>
+          </a>
+
+
+            <li class="nav-item">
+              <a href="books.php" class="nav-link">
                 <p>
-                  Dashboard
-                <i class="right fas fa-angle-left"></i>
+                  Books
                 </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="borrow.php" class="nav-link">
-                  <p>
-                    Borrow Book
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="add.php" class="nav-link">
-                  <p>
-                    Add Books
-                  </p>
-                </a>
-              </li>
+              </a>
+            </li>
 
-            </ul>
           </li>
 
           <li class="nav-item">
-        <a href="" class="nav-link">
-          <p>
-            Student
-            <i class="fas fa-angle-left right"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="" class="nav-link">
+           <a href="student.php" class="nav-link">
               <p>
-                Add Student
+               Student
+                
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Update Student
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">
-              <p>
-                Delete Student
-              </p>
-            </a>
-          </li>
-        </ul>
-          </li>
+          
       </nav>
       <!-- /.sidebar-menu -->
     </div>
