@@ -4,7 +4,8 @@ include 'connect.php';
 
 
   
-  $result= mysqli_query($conn,"SELECT * FROM borrow WHERE status='unavailable'");
+  $result= mysqli_query($conn,"SELECT * FROM pinjamBuku WHERE status='unavailable'");
+  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'")
 
 
 ?>
@@ -51,11 +52,7 @@ include 'connect.php';
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-
-
     </ul>
-
-
   </nav>
   <!-- /.navbar -->
 
@@ -64,7 +61,7 @@ include 'connect.php';
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-library</span>
+      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
     </a>
 
     <!-- Sidebar -->
@@ -77,43 +74,63 @@ include 'connect.php';
         </div>
       </div>
 
-
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
+        
           <li class="nav-item menu-open">
           <a href="dashboard.php" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+             
               <p>
-                Dashboard
-
+                 Dashboard
+                <i class="right fas fa-angle-left"></i>
               </p>
           </a>
-
-
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="books.php" class="nav-link">
-                <p>
-                  Books
-                </p>
-              </a>
-            </li>
-
-          </li>
-
-          <li class="nav-item">
-           <a href="student.php" class="nav-link">
+              <a href="barang.php" class="nav-link">
               <p>
-               Student
-                
+               Barang
               </p>
             </a>
           </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a href="dashboard.php" class="nav-link active">
           
+              <p>
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+          <li class="nav-item">
+              <a href="books.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="student.php" class="nav-link">
+              <p>
+               Siswa 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="student.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          </ul>
+           
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -127,47 +144,78 @@ include 'connect.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-left">
+
             <h1 class="m-0">Dashboard</h1>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="borrow.php"><button  class="btn btn-primary " >Borrow</button></a>
-            </ol>
-
+           <!-- Search form -->
+            <input class="form-control" type="text" placeholder="Cari Buku" aria-label="Search">
           </div><!-- /.col -->
-
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
     <!-- Main content -->
- 
       <div class="container ">
+        <div class="card">
+          <div class="card-body">
+            <table border="1" cellpadding="10" class="table table-bordered table-hover">
+              <tr>
+                <td>No</td>
+                <td>Judul Buku</td>
+                <td>Nama Pengarang</td>
+                <td>Publikasi</td>
+                <td>Edisi</td>
+                <td>status</td>
+                <td>Aksi</td>
+              </tr>
+              <tr>
+              <?php $i=1; ?>
+              <?php while($row = mysqli_fetch_assoc($result1)): ?>
+                <td><?= $i; ?></td>
+                <td><?= $row['judul'] ?></td>
+                <td><?= $row['nama'] ?></td>
+                <td><?= $row['publikasi'] ?></td>
+                <td><?= $row['edisi'] ?></td>
+                <td><?= $row['status'] ?></td>
+              <td>
+                <a href="bupdate.php?id=<?=  $row['idBuku']?>" class="nav-link">Update</a>
+                <a href="borrow.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
 
+              </td>
+              <?php $i++; ?>
+              <?php endwhile; ?>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <input class="form-control" type="text" placeholder="Cari" aria-label="Search">
+        <br>
         <!-- Small boxes (Stat box) -->
           <table border="1" cellpadding="10" class="table table-bordered table-hover">
           <tr>
               <td>No</td>
-              <td>Action</td>
-              <td>Id Book</td>
+              <td>Judul Buku</td>
               <td>No Induk</td>
-              <td>Date Borrow</td>
-              <td>Date Return</td>
+              <td>Tanggal Pinjam</td>
+              <td>Tanggal Kembali</td>
               <td>status</td>
+              <td>Aksi</td>
             </tr>
             <?php $i=1; ?>
           <?php while($row = mysqli_fetch_assoc($result)): ?>
 
             <tr>
               <td><?= $i; ?></td>
+
+              <td><?= $row['namaBuku']; ?></td>
+              <td><?= $row['noInduk']; ?></td>
+              <td><?= $row['tanggalPinjam']; ?></td>
+              <td><?= $row['tanggalKembali']; ?></td>
+              <td><?= $row['status']; ?></td>
               <td>
                 <a href="update.php?id=<?=  $row['id']?>" class="nav-link">Update</a>
-
               </td>
-              <td><?= $row['idbook']; ?></td>
-              <td><?= $row['noInduk']; ?></td>
-              <td><?= $row['dateBorrow']; ?></td>
-              <td><?= $row['dateReturn']; ?></td>
-              <td><?= $row['status']; ?></td>
             </tr>
             <?php $i++; ?>
             <?php endwhile; ?>

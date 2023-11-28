@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2023 at 01:53 PM
+-- Generation Time: Nov 27, 2023 at 07:16 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -24,47 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `books`
+-- Table structure for table `barang`
 --
 
-CREATE TABLE `books` (
-  `idbook` int(50) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `publication year` varchar(10) NOT NULL,
-  `edition` varchar(5) NOT NULL,
+CREATE TABLE `barang` (
+  `idbarang` varchar(25) NOT NULL,
+  `namabarang` varchar(100) NOT NULL,
+  `stok` int(11) NOT NULL,
   `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `books`
+-- Dumping data for table `barang`
 --
 
-INSERT INTO `books` (`idbook`, `title`, `name`, `publication year`, `edition`, `status`) VALUES
-(1, 'Router Mikrotik', 'Rendra Towidjojo', '2015', '1', 'available'),
-(2, 'sadd', 'sdawd', '234', '12', 'available');
+INSERT INTO `barang` (`idbarang`, `namabarang`, `stok`, `status`) VALUES
+('BR_001', 'Mikrotik', 10, 'available');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `borrow`
+-- Table structure for table `buku`
 --
 
-CREATE TABLE `borrow` (
-  `id` int(50) NOT NULL,
-  `idbook` int(50) NOT NULL,
-  `noInduk` varchar(50) NOT NULL,
-  `dateBorrow` date NOT NULL,
-  `dateReturn` date NOT NULL,
+CREATE TABLE `buku` (
+  `idBuku` varchar(20) NOT NULL,
+  `judul` varchar(50) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `publikasi` varchar(20) NOT NULL,
+  `edisi` varchar(10) NOT NULL,
   `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `borrow`
+-- Dumping data for table `buku`
 --
 
-INSERT INTO `borrow` (`id`, `idbook`, `noInduk`, `dateBorrow`, `dateReturn`, `status`) VALUES
-(1, 1, '19340019', '2023-11-16', '2023-11-30', 'avalaible');
+INSERT INTO `buku` (`idBuku`, `judul`, `nama`, `publikasi`, `edisi`, `status`) VALUES
+('BK001', 'Pemrograman C++ Revisi Kedua', 'Budi Raharjo', 'Informatika', '2', 'available');
 
 -- --------------------------------------------------------
 
@@ -87,39 +84,84 @@ INSERT INTO `login` (`username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `student`
+-- Table structure for table `pinjam`
 --
 
-CREATE TABLE `student` (
-  `noInduk` varchar(50) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `class` varchar(20) NOT NULL
+CREATE TABLE `pinjam` (
+  `idpinjam` varchar(25) NOT NULL,
+  `noInduk` varchar(25) NOT NULL,
+  `idbarang` varchar(25) NOT NULL,
+  `namaBarang` varchar(50) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `tanggalpinjam` datetime NOT NULL,
+  `tanggalkembali` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `student`
+-- Dumping data for table `pinjam`
 --
 
-INSERT INTO `student` (`noInduk`, `name`, `class`) VALUES
-('19340019', 'audi', '12tkj1');
+INSERT INTO `pinjam` (`idpinjam`, `noInduk`, `idbarang`, `namaBarang`, `status`, `tanggalpinjam`, `tanggalkembali`) VALUES
+('PJ001', '19340018', 'BR_001', 'Mikrotik', 'unavailable', '2023-11-27 06:48:31', '2023-11-30 12:48:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pinjambuku`
+--
+
+CREATE TABLE `pinjambuku` (
+  `id` int(50) NOT NULL,
+  `idBuku` varchar(50) NOT NULL,
+  `noInduk` varchar(50) NOT NULL,
+  `namaBuku` varchar(50) NOT NULL,
+  `tanggalPinjam` date NOT NULL,
+  `tanggalKembali` date NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pinjambuku`
+--
+
+INSERT INTO `pinjambuku` (`id`, `idBuku`, `noInduk`, `namaBuku`, `tanggalPinjam`, `tanggalKembali`, `status`) VALUES
+(1, 'BK001', '19340018', 'Pemrograman C++ Revisi Kedua', '2023-11-27', '2023-11-30', 'unavailable');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `siswa`
+--
+
+CREATE TABLE `siswa` (
+  `noInduk` varchar(25) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `kelas` varchar(25) NOT NULL,
+  `password` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `siswa`
+--
+
+INSERT INTO `siswa` (`noInduk`, `nama`, `kelas`, `password`) VALUES
+('19340018', 'Galih', 'X TKJ 1', 'galih123');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `books`
+-- Indexes for table `barang`
 --
-ALTER TABLE `books`
-  ADD PRIMARY KEY (`idbook`);
+ALTER TABLE `barang`
+  ADD PRIMARY KEY (`idbarang`);
 
 --
--- Indexes for table `borrow`
+-- Indexes for table `buku`
 --
-ALTER TABLE `borrow`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idbook` (`idbook`),
-  ADD KEY `noInduk` (`noInduk`);
+ALTER TABLE `buku`
+  ADD PRIMARY KEY (`idBuku`);
 
 --
 -- Indexes for table `login`
@@ -128,9 +170,25 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`username`);
 
 --
--- Indexes for table `student`
+-- Indexes for table `pinjam`
 --
-ALTER TABLE `student`
+ALTER TABLE `pinjam`
+  ADD PRIMARY KEY (`idpinjam`),
+  ADD UNIQUE KEY `iduser` (`noInduk`),
+  ADD UNIQUE KEY `idbarang` (`idbarang`);
+
+--
+-- Indexes for table `pinjambuku`
+--
+ALTER TABLE `pinjambuku`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `buku` (`idBuku`),
+  ADD KEY `siswa` (`noInduk`);
+
+--
+-- Indexes for table `siswa`
+--
+ALTER TABLE `siswa`
   ADD PRIMARY KEY (`noInduk`);
 
 --
@@ -138,15 +196,9 @@ ALTER TABLE `student`
 --
 
 --
--- AUTO_INCREMENT for table `books`
+-- AUTO_INCREMENT for table `pinjambuku`
 --
-ALTER TABLE `books`
-  MODIFY `idbook` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `borrow`
---
-ALTER TABLE `borrow`
+ALTER TABLE `pinjambuku`
   MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -154,11 +206,18 @@ ALTER TABLE `borrow`
 --
 
 --
--- Constraints for table `borrow`
+-- Constraints for table `pinjam`
 --
-ALTER TABLE `borrow`
-  ADD CONSTRAINT `borrow_ibfk_1` FOREIGN KEY (`idbook`) REFERENCES `books` (`idbook`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `borrow_ibfk_2` FOREIGN KEY (`noInduk`) REFERENCES `student` (`noInduk`) ON UPDATE CASCADE;
+ALTER TABLE `pinjam`
+  ADD CONSTRAINT `barang` FOREIGN KEY (`idbarang`) REFERENCES `barang` (`idbarang`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `no induk` FOREIGN KEY (`noInduk`) REFERENCES `siswa` (`noInduk`);
+
+--
+-- Constraints for table `pinjambuku`
+--
+ALTER TABLE `pinjambuku`
+  ADD CONSTRAINT `buku` FOREIGN KEY (`idBuku`) REFERENCES `buku` (`idBuku`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `siswa` FOREIGN KEY (`noInduk`) REFERENCES `siswa` (`noInduk`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

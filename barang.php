@@ -4,7 +4,8 @@ include 'connect.php';
 
 
   
-  $result= mysqli_query($conn,"SELECT * FROM student");
+  $result= mysqli_query($conn,"SELECT * FROM pinjamBuku WHERE status='unavailable'");
+  $result1= mysqli_query($conn,"SELECT * FROM pinjam WHERE status='unavailable'")
 
 
 ?>
@@ -13,7 +14,7 @@ include 'connect.php';
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Student</title>
+  <title> Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -51,11 +52,7 @@ include 'connect.php';
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-
-
     </ul>
-
-
   </nav>
   <!-- /.navbar -->
 
@@ -64,7 +61,7 @@ include 'connect.php';
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-library</span>
+      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
     </a>
 
     <!-- Sidebar -->
@@ -77,8 +74,6 @@ include 'connect.php';
         </div>
       </div>
 
-
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -90,30 +85,23 @@ include 'connect.php';
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-
               </p>
           </a>
-
-
             <li class="nav-item">
               <a href="books.php" class="nav-link">
                 <p>
-                  Books
+                  Buku
                 </p>
               </a>
             </li>
-
           </li>
-
           <li class="nav-item">
-           <a href="" class="nav-link">
+           <a href="student.php" class="nav-link">
               <p>
-               Student
-                
+               Siswa 
               </p>
             </a>
           </li>
-          
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -128,45 +116,73 @@ include 'connect.php';
         <div class="row mb-2">
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-left">
-            <h1 class="m-0">Student</h1>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="sadd.php"><button  class="btn btn-primary " >Add</button></a>
+            <h1 class="m-0">Dashboard</h1>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="borrow.php"><button  class="btn btn-primary " >Borrow</button></a>
             </ol>
-
           </div><!-- /.col -->
-
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
     <!-- Main content -->
- 
       <div class="container ">
+        <div class="card">
+          <div class="card-body">
+            <table border="1" cellpadding="10" class="table table-bordered table-hover">
+              <tr>
+                <td>No</td>
+                <td>Nama Alat</td>
+                <td>No Induk</td>
+                <td>Tanggal Pinjam</td>
+                <td>Tanggal Kembali</td>
+                <td>status</td>
+                <td>Aksi</td>
+              </tr>
+              <tr>
+              <?php $i=1; ?>
+              <?php while($row = mysqli_fetch_assoc($result1)): ?>
+                <td><?= $i; ?></td>
+                <td><?= $row['namaBarang'] ?></td>
+                <td><?= $row['noInduk'] ?></td>
+                <td><?= $row['tanggalpinjam'] ?></td>
+                <td><?= $row['tanggalkembali'] ?></td>
+                <td><?= $row['status'] ?></td>
+                <td>
+                <a href="bupdate.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
+              </td>
+              <?php $i++; ?>
+              <?php endwhile; ?>
+              </tr>
+            </table>
+          </div>
+        </div>
 
         <!-- Small boxes (Stat box) -->
           <table border="1" cellpadding="10" class="table table-bordered table-hover">
           <tr>
               <td>No</td>
-              <td>Action</td>
+              <td>Judul Buku</td>
               <td>No Induk</td>
-              <td>Name</td>
-              <td>Class</td>
-
+              <td>Tanggal Pinjam</td>
+              <td>Tanggal Kembali</td>
+              <td>status</td>
+              <td>Aksi</td>
             </tr>
             <?php $i=1; ?>
           <?php while($row = mysqli_fetch_assoc($result)): ?>
 
             <tr>
               <td><?= $i; ?></td>
-              <td>
-                <a href="supdate.php?id=<?=  $row['noInduk']?>" class="nav-link">Update</a>
-                <a href="sdelete.php?id=<?=  $row['noInduk']?>" class="nav-link">Delete</a>
 
-              </td>
+              <td><?= $row['namaBuku']; ?></td>
               <td><?= $row['noInduk']; ?></td>
-              <td><?= $row['name']; ?></td>
-              <td><?= $row['class']; ?></td>
-
+              <td><?= $row['tanggalPinjam']; ?></td>
+              <td><?= $row['tanggalKembali']; ?></td>
+              <td><?= $row['status']; ?></td>
+              <td>
+                <a href="update.php?id=<?=  $row['id']?>" class="nav-link">Update</a>
+              </td>
             </tr>
             <?php $i++; ?>
             <?php endwhile; ?>
