@@ -145,9 +145,18 @@ include 'connect.php';
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard</h1>&nbsp;&nbsp;&nbsp;&nbsp;
+            <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
-            <input class="form-control" type="text" placeholder="Cari Buku" aria-label="Search">
+            <div class="input-group">
+              <form action=""  class="d-flex">
+                <div class="form-outline" data-mdb-input-init>
+                  <input type="text" class="form-control me 2" id="keyword"/>
+                </div>
+                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
+                  <i class="fas fa-search"></i>
+                </button>
+            </form>
+            </div>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -155,10 +164,10 @@ include 'connect.php';
     <!-- /.content-header -->
 
     <!-- Main content -->
-      <div class="container ">
+      <div class="container  ">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover">
+            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
                 <td>No</td>
                 <td>Judul Buku</td>
@@ -227,7 +236,9 @@ include 'connect.php';
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
+
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
@@ -259,5 +270,6 @@ include 'connect.php';
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
