@@ -2,31 +2,56 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
+include 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
+if(isset($_POST['submit'])){
+  $excelMimes = array('text/xls', 'text/xlsx', 'application/excel', 'application/vnd.msexcel', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); 
+
+  if(!empty($_FILES['file']['name']) && in_array($_FILES['file']['type'], $excelMimes)){
+
+    if(is_uploaded_file($_FILES['file']['tmp_name'])){
+
+      $reader= new  Xlsx();
+      $spreadsheet= $reader->load($_FILES['file']['tmp_name']);
+      $worksheet = $spreadsheet->getActiveSheet();
+      
+      $worksheet_arr= $worksheet->toArray();
+
+      unset($worksheet_arr[0]);
+
+      foreach($worksheet_arr as $row){
+
+
+        $idBuku=$row[0];
+        $judul=$row[1];
+        $nama=$row[2];
+        $publikasi=$row[3];
+        $edisi=$row[4];
+
+        $prevQuery="SELECT idBuku FROM buku WHERE idBuku='$idBuku'";
+        $prevResult= $conn->query($prevQuery);
+
+        if($prevResult->num_rows>0){
+          $conn->query("UPDATE buku SET judul='$judul',nama= '$nama',publikasi='$publikasi',edisi='$edisi' 
+          WHERE idBuku='$idBuku' ");
+        }else{
+          mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+        }
+      }
+      $qstring='?status=succ';
+    }else{
+      $qstring='?status=err';
+    }
+  }else{
+    $qstring='?status=invalid_file';
   }
-}
 
+  header("Location: dashboard.php".$qstring);
   
-  $result= mysqli_query($conn,"SELECT * FROM pinjam WHERE status='unavailable'");
 
-
+}
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +59,7 @@ if(!empty($_GET['status'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard</title>
+  <title> Add Book</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -72,7 +97,11 @@ if(!empty($_GET['status'])){
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+
+
     </ul>
+
+
   </nav>
   <!-- /.navbar -->
 
@@ -81,7 +110,7 @@ if(!empty($_GET['status'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
+      <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
     <!-- Sidebar -->
@@ -90,9 +119,11 @@ if(!empty($_GET['status'])){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
+          <a href="#" class="d-block">Admin</a>
         </div>
       </div>
+
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -100,64 +131,35 @@ if(!empty($_GET['status'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-        
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
-             
+          <a href="dashboard.php" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                 Dashboard
-                <i class="right fas fa-angle-left"></i>
+                Dashboard
+
               </p>
           </a>
-          <ul class="nav nav-treeview">
+
+
             <li class="nav-item">
-              <a href="barang.php" class="nav-link">
+              <a href="books.php" class="nav-link">
                 <p>
-                  Barang
+                  Books
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="buku.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
+
+          </li>
+
+          <li class="nav-item">
+           <a href="student.php" class="nav-link">
+              <p>
+               Student
+                
+              </p>
+            </a>
+          </li>
           
-              <p>
-                 Tambah
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-          <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="student.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="student.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>
-           
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -171,68 +173,34 @@ if(!empty($_GET['status'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0">Dashboard</h1><br>
-           <!-- Search form -->
-            <div class="input-group">
-              <form action=""  class="d-flex">
-                <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            </div>
+            <h1 class="m-0">Add Books</h1>
           </div><!-- /.col -->
+
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <?php if(!empty($statusMsg)){?>
-      <div class="col-xs-12 p-3">
-        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
-      </div>
 
-    <?php } ?>
     <!-- Main content -->
-      <div class="container  ">
-        <div class="card">
-          <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
-              <tr>
-                <td>No</td>
-                <td>Nama Barang</td>
-                <td>Nama Siswa</td>
-                <td>Tanggal Pinjam</td>
-                <td>Tanggal Kembali</td>
-                <td>Aksi</td>
-              </tr>
-              <tr>
-              <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result)): ?>
-                <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['namaSiswa'] ?></td>
-                <td><?= $row['tanggalpinjam'] ?></td>
-                <td><?= $row['tanggalkembali'] ?></td>
-              <td>
-                <a href="bupdate.php?id=<?=  $row['idBarang']?>" class="nav-link">Update</a>
-                <a href="borrow.php?id=<?=  $row['idBarang']?>" class="nav-link">Pinjam</a>
-
-              </td>
-              </tr>
-              <?php $i++; ?>
-              <?php endwhile; ?>
-
-            </table>
-          </div>
-        </div>
-
-
-        <br>
+ 
+      <div class="container ">
         <!-- Small boxes (Stat box) -->
-         
+        <div class="row">
+          <div class="container">
+          <div class="card">
+            <div class="card-body">
+            <form action="add.php" method="post" enctype="multipart/form-data">
+            <label for="title">Import excel file</label>
+            <input type="file" name="file" class="form-control " required>
+            <div class="text-center">
+            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
+            </div>
+
+          </form>
+            </div>
+          </div>
+ 
+          </div>
         </div>
 
        
@@ -240,9 +208,7 @@ if(!empty($_GET['status'])){
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
-
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
@@ -274,6 +240,5 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script src="script.js"></script>
 </body>
 </html>

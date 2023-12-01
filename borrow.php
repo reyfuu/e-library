@@ -1,34 +1,37 @@
 <?php 
 
 include 'connect.php';
-
-
+$result1= mysqli_query($conn,"SELECT * FROM pinjambuku ");
+$rowCount= mysqli_num_rows($result1);
+$rowCount+=1;
+ $idPinjam='PJBK'. strval($rowCount);
 
 if(isset($_POST['submit'])){
-  $title= $_POST['title'];
-  $name=$_POST['name'];
+  $judul= $_POST['judul'];
+  $nama=$_POST['nama'];
   $date=$_POST['date'];
-  $dateReturn= strtotime($date);
-  $dateReturn= strtotime("+7 day", $dateReturn);
-  $dateReturn= date('Y/m/d', $dateReturn);
+  $tanggalKembali= strtotime($date);
+  $tanggalKembali= strtotime("+7 day", $tanggalKembali);
+  $tanggalKembali= date('Y/m/d', $tanggalKembali);
 
 
   $idbookTemp= null;
   $noIndukTemp= null;
   
-  $idbook= mysqli_query($conn,"SELECT idbook FROM books WHERE title='$title'");
-  $noInduk= mysqli_query($conn,"SELECT noInduk FROM student WHERE name='$name'");
+  $idbuku= mysqli_query($conn,"SELECT idBuku FROM buku WHERE judul='$judul'");
+  $noInduk= mysqli_query($conn,"SELECT noInduk FROM siswa WHERE nama='$nama'");
 
 
-  while($row= mysqli_fetch_array($idbook)){
-    $idbookTemp=$row['idbook'];
+  while($row= mysqli_fetch_array($idbuku)){
+    $idbookTemp=$row['idBuku'];
   }
   var_dump($idbookTemp);
   while($row1=mysqli_fetch_array($noInduk)){
     $noIndukTemp=$row1['noInduk'];
   }
 try{
-  mysqli_query($conn,"INSERT INTO `borrow` (`idbook`,`noInduk`,`dateBorrow`,`dateReturn`,`status`) VALUES ('$idbookTemp','$noIndukTemp','$date','$dateReturn','unavailable')");
+  mysqli_query($conn,"INSERT INTO `pinjambuku` (`idPinjam`,`idBuku`,`noInduk`,`namaSiswa`,`namaBuku`,`tanggalPinjam`,
+  `tanggalKembali`,`status`) VALUES ('$idPinjam','$idbookTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali','unavailable')");
 }catch (mysqli_sql_exception $e){
   var_dump($e);
   exit;
@@ -121,35 +124,63 @@ try{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
+        
           <li class="nav-item menu-open">
-          <a href="dashboard.php" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+          <a  class="nav-link active">
+             
               <p>
-                Dashboard
-
+                 Dashboard
+                <i class="right fas fa-angle-left"></i>
               </p>
           </a>
-
-
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="books.php" class="nav-link">
+              <a href="barang.php" class="nav-link">
                 <p>
-                  Books
+                  Barang
                 </p>
               </a>
             </li>
-
-          </li>
-
-          <li class="nav-item">
-          <a href="student.php" class="nav-link">
+            <li class="nav-item">
+              <a href="dashboard.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+          
               <p>
-               Student
-                
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+          <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="student.php" class="nav-link">
+              <p>
+               Siswa 
               </p>
             </a>
           </li>
-          
+          <li class="nav-item">
+           <a href="student.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -180,11 +211,11 @@ try{
           <div class="card">
             <div class="card-body">
             <form action="borrow.php" method="post">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control my-3 py-2" required>
-            <label for="title">Name</label>
-            <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Date</label>
+            <label for="title">Judul</label>
+            <input type="text" name="judul" class="form-control my-3 py-2" required>
+            <label for="title">Nama</label>
+            <input type="text" name="nama" class="form-control my-3 py-2" required>
+            <label for="title">Tanggal</label>
             <input type="date" name="date" class="form-control my-3 py-2" required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
@@ -207,6 +238,7 @@ try{
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
+
 </script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

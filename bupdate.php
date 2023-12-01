@@ -4,20 +4,20 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
-$result= mysqli_query($conn,"SELECT * FROM `books` WHERE idbook='$id'");
+$result= mysqli_query($conn,"SELECT * FROM `buku` WHERE idBuku='$id'");
 
 
 if(isset($_POST['submit'])){
 
-    $id=$_POST['id'];
-    $title=$_POST['title'];
-    $name=$_POST['name'];
-    $publication=$_POST['publication'];
-    $edition=$_POST['edition'];
+    $idBuku=$_POST['idBuku'];
+    $judul=$_POST['judul'];
+    $nama=$_POST['nama'];
+    $publikasi=$_POST['publikasi'];
+    $edisi=$_POST['edisi'];
     $status=$_POST['status'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE books SET title='$title', name='$name', `publication year`='$publication', edition='$edition', status='$status'  WHERE idbook='$id'");
+      $result= mysqli_query($conn, "UPDATE buku SET judul='$judul', nama='$nama', publikasi='$publikasi', edisi='$edisi', status='$status'  WHERE idBuku='$idBuku'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -30,7 +30,7 @@ if(isset($_POST['submit'])){
     $check= mysqli_affected_rows($conn);
     if($check> 0){
      
-        header("Location:books.php");
+        header("Location:dashboard.php");
     }
     else{
         echo "<script>
@@ -69,17 +69,17 @@ if(isset($_POST['submit'])){
    
 
       <form action="bupdate.php" method="post">
-      <input type="hidden" name="id" value="<?= $id ?>">
+      <input type="hidden" name="idBuku" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="title">Title</label>
-          <input type="text" class="form-control"  name="title" value="<?= $row["title"];?>">
-          <label for="name">Name</label>
-          <input type="text" class="form-control"  name="name" value="<?= $row['name']; ?>">
-          <label for="publication">Publication Year</label>
-          <input type="text" class="form-control"  name="publication" value="<?= $row['publication year']; ?>">
-          <label for="edition">Edition</label>
-          <input type="text" class="form-control"  name="edition" value="<?= $row['edition'] ;?>">
+          <label for="title">Judul</label>
+          <input type="text" class="form-control"  name="judul" value="<?= $row["judul"];?>">
+          <label for="name">Nama</label>
+          <input type="text" class="form-control"  name="nama" value="<?= $row['nama']; ?>">
+          <label for="publication">Publikasi</label>
+          <input type="text" class="form-control"  name="publikasi" value="<?= $row['publikasi']; ?>">
+          <label for="edition">Edisi</label>
+          <input type="text" class="form-control"  name="edisi" value="<?= $row['edisi'] ;?>">
           <label for="status">Status</label>
           <input type="text" class="form-control"  name="status" value="<?= $row['status'] ;?>">
           <?php endwhile; ?>

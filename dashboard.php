@@ -24,8 +24,8 @@ if(!empty($_GET['status'])){
 }
 
   
-  $result= mysqli_query($conn,"SELECT * FROM pinjamBuku WHERE status='unavailable'");
-  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'")
+
+  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
 
 
 ?>
@@ -102,7 +102,7 @@ if(!empty($_GET['status'])){
 
         
           <li class="nav-item menu-open">
-          <a href="dashboard.php" class="nav-link active">
+          <a  class="nav-link active">
              
               <p>
                  Dashboard
@@ -112,14 +112,21 @@ if(!empty($_GET['status'])){
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="barang.php" class="nav-link">
-              <p>
-               Barang
-              </p>
-            </a>
-          </li>
+                <p>
+                  Barang
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="dashboard.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
-          <a href="dashboard.php" class="nav-link active">
+          <a  class="nav-link active">
           
               <p>
                  Tambah
@@ -150,7 +157,6 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           </ul>
-           
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -216,52 +222,14 @@ if(!empty($_GET['status'])){
                 <a href="borrow.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
 
               </td>
+              </tr>
               <?php $i++; ?>
               <?php endwhile; ?>
-              </tr>
+
             </table>
           </div>
         </div>
-        <div class="input-group">
-              <form action=""  class="d-flex">
-                <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword2"/>
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari2">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            </div>
-        <br>
-        <!-- Small boxes (Stat box) -->
-          <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table2">
-          <tr>
-              <td>No</td>
-              <td>Judul Buku</td>
-              <td>No Induk</td>
-              <td>Tanggal Pinjam</td>
-              <td>Tanggal Kembali</td>
-              <td>status</td>
-              <td>Aksi</td>
-            </tr>
-            <?php $i=1; ?>
-          <?php while($row = mysqli_fetch_assoc($result)): ?>
 
-            <tr>
-              <td><?= $i; ?></td>
-
-              <td><?= $row['namaBuku']; ?></td>
-              <td><?= $row['noInduk']; ?></td>
-              <td><?= $row['tanggalPinjam']; ?></td>
-              <td><?= $row['tanggalKembali']; ?></td>
-              <td><?= $row['status']; ?></td>
-              <td>
-                <a href="update.php?id=<?=  $row['id']?>" class="nav-link">Update</a>
-              </td>
-            </tr>
-            <?php $i++; ?>
-            <?php endwhile; ?>
-            </table>
         </div>
 
        
