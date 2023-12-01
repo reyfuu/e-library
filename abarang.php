@@ -24,20 +24,21 @@ if(isset($_POST['submit'])){
       foreach($worksheet_arr as $row){
 
 
-        $idBuku=$row[0];
-        $judul=$row[1];
-        $nama=$row[2];
-        $publikasi=$row[3];
-        $edisi=$row[4];
+        $idBarang=$row[0];
+        $namaBarang=$row[1];
+        $stok=intval($row[2]);
 
-        $prevQuery="SELECT idBuku FROM buku WHERE idBuku='$idBuku'";
+   
+
+        $prevQuery="SELECT idbarang FROM barang WHERE idbarang='$idBarang'";
         $prevResult= $conn->query($prevQuery);
 
         if($prevResult->num_rows>0){
-          $conn->query("UPDATE buku SET judul='$judul',nama= '$nama',publikasi='$publikasi',edisi='$edisi' 
-          WHERE idBuku='$idBuku' ");
+          $conn->query("UPDATE barang SET namabarang='$namaBarang',stok= '$stok',status='available' 
+          WHERE idbarang='$idBarang' ");
         }else{
-          mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+          mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namabarang`,`stok`,`status`) 
+          VALUES ('$idBarang','$namaBarang','$stok','available')");
         }
       }
       $qstring='?status=succ';
@@ -48,7 +49,7 @@ if(isset($_POST['submit'])){
     $qstring='?status=invalid_file';
   }
 
-  header("Location: dashboard.php".$qstring);
+  header("Location: barang.php".$qstring);
   
 
 }
@@ -189,7 +190,7 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="add.php" method="post" enctype="multipart/form-data">
+            <form action="abarang.php" method="post" enctype="multipart/form-data">
             <label for="title">Import excel file</label>
             <input type="file" name="file" class="form-control " required>
             <div class="text-center">

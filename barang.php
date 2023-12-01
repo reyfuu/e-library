@@ -24,7 +24,7 @@ if(!empty($_GET['status'])){
 }
 
   
-  $result= mysqli_query($conn,"SELECT * FROM pinjam WHERE status='unavailable'");
+  $result= mysqli_query($conn,"SELECT * FROM barang");
 
 
 
@@ -150,7 +150,7 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="student.php" class="nav-link">
+           <a href="abarang.php" class="nav-link">
               <p>
                Barang 
               </p>
@@ -203,9 +203,8 @@ if(!empty($_GET['status'])){
               <tr>
                 <td>No</td>
                 <td>Nama Barang</td>
-                <td>Nama Siswa</td>
-                <td>Tanggal Pinjam</td>
-                <td>Tanggal Kembali</td>
+                <td>Stok</td>
+                <td>Status</td>
                 <td>Aksi</td>
               </tr>
               <tr>
@@ -213,12 +212,13 @@ if(!empty($_GET['status'])){
               <?php while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['namaSiswa'] ?></td>
-                <td><?= $row['tanggalpinjam'] ?></td>
-                <td><?= $row['tanggalkembali'] ?></td>
+                <td><?= $row['stok'] ?></td>
+                <td><?= $row['status'] ?></td>
+
               <td>
-                <a href="bupdate.php?id=<?=  $row['idBarang']?>" class="nav-link">Update</a>
-                <a href="borrow.php?id=<?=  $row['idBarang']?>" class="nav-link">Pinjam</a>
+                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
+                <a href="dbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Delete</a>
+                <a href="borrow.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
 
               </td>
               </tr>
