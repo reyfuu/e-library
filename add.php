@@ -2,21 +2,55 @@
 
 include 'connect.php';
 
+include 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 if(isset($_POST['submit'])){
-  $title= $_POST['title'];
-  $name=$_POST['name'];
-  $publication=$_POST['publication'];
-  $edition=$_POST['edition'];
+  $excelMimes = array('text/xls', 'text/xlsx', 'application/excel', 'application/vnd.msexcel', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); 
+
+  if(!empty($_FILES['file']['name']) && in_array($_FILES['file']['type'], $excelMimes)){
+
+    if(is_uploaded_file($_FILES['file']['tmp_name'])){
+
+      $reader= new  Xlsx();
+      $spreadsheet= $reader->load($_FILES['file']['tmp_name']);
+      $worksheet = $spreadsheet->getActiveSheet();
+      
+      $worksheet_arr= $worksheet->toArray();
+
+      unset($worksheet_arr[0]);
+
+      foreach($worksheet_arr as $row){
 
 
-  mysqli_query($conn,"INSERT INTO `books` (`title`,`name`,`publication year`,`edition`,`status`) VALUES ('$title','$name','$publication','$edition','available')");
- 
-  if(mysqli_affected_rows($conn)> 0){
-    header("Location: books.php");
+        $idBuku=$row[0];
+        $judul=$row[1];
+        $nama=$row[2];
+        $publikasi=$row[3];
+        $edisi=$row[4];
+
+        $prevQuery="SELECT idBuku FROM buku WHERE idBuku='$idBuku'";
+        $prevResult= $conn->query($prevQuery);
+
+        if($prevResult->num_rows>0){
+          $conn->query("UPDATE buku SET judul='$judul',nama= '$nama',publikasi='$publikasi',edisi='$edisi' 
+          WHERE idBuku='$idBuku' ");
+        }else{
+          mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+        }
+      }
+      $qstring='?status=succ';
+    }else{
+      $qstring='?status=err';
+    }
   }else{
-    echo "gagal";
-    echo mysqli_error($conn);
+    $qstring='?status=invalid_file';
   }
+
+  header("Location: dashboard.php".$qstring);
+  
+
 }
 
 ?>
@@ -155,15 +189,9 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="add.php" method="post">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control my-3 py-2" required>
-            <label for="title">Name</label>
-            <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="title">Publication</label>
-            <input type="text" name="publication" class="form-control my-3 py-2" required>
-            <label for="title">Edition</label>
-            <input type="text" name="edition" class="form-control my-3 py-2" required>
+            <form action="add.php" method="post" enctype="multipart/form-data">
+            <label for="title">Import excel file</label>
+            <input type="file" name="file" class="form-control " required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>
