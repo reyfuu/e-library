@@ -11,11 +11,10 @@ if(isset($_POST['submit'])){
 
     $idBarang=$_POST['idBarang'];
     $nama=$_POST['nama'];
-    $stok=intval($_POST['stok']);
     $status=$_POST['status'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE barang SET namabarang='$nama', stok='$stok', status='$status'  WHERE idbarang='$idBarang'");
+      $result= mysqli_query($conn, "UPDATE barang SET namabarang='$nama', status='$status'  WHERE idbarang='$idBarang'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -70,10 +69,8 @@ if(isset($_POST['submit'])){
       <input type="hidden" name="idBarang" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="title">Nama Barangf</label>
+          <label for="title">Nama Barang</label>
           <input type="text" class="form-control"  name="nama" value="<?= $row["namabarang"];?>">
-          <label for="name">Stok</label>
-          <input type="text" class="form-control"  name="stok" value="<?= $row['stok']; ?>">
           <label for="name">Status</label>
           <input type="text" class="form-control"  name="status" value="<?= $row['status']; ?>">
           <?php endwhile; ?>

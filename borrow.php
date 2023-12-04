@@ -31,7 +31,8 @@ if(isset($_POST['submit'])){
   }
 try{
   mysqli_query($conn,"INSERT INTO `pinjambuku` (`idPinjam`,`idBuku`,`noInduk`,`namaSiswa`,`namaBuku`,`tanggalPinjam`,
-  `tanggalKembali`,`status`) VALUES ('$idPinjam','$idbookTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali','unavailable')");
+  `tanggalKembali`) VALUES ('$idPinjam','$idbookTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali')");
+  mysqli_query($conn, "UPDATE buku SET  status='available'  WHERE idBuku='$idbookTemp'");
 }catch (mysqli_sql_exception $e){
   var_dump($e);
   exit;
@@ -52,7 +53,7 @@ try{
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Borrow</title>
+  <title> Pinjam Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

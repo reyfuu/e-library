@@ -34,7 +34,7 @@ if(!empty($_GET['status'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard</title>
+  <title> Dashboard Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -99,11 +99,8 @@ if(!empty($_GET['status'])){
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
-        
           <li class="nav-item menu-open">
           <a  class="nav-link active">
-             
               <p>
                  Dashboard
                 <i class="right fas fa-angle-left"></i>
@@ -124,17 +121,23 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
-          
               <p>
                  Tambah
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
-          <li class="nav-item">
+            <li class="nav-item">
               <a href="add.php" class="nav-link">
                 <p>
                   Buku
@@ -143,14 +146,14 @@ if(!empty($_GET['status'])){
             </li>
           </li>
           <li class="nav-item">
-           <a href="student.php" class="nav-link">
+           <a href="sadd.php" class="nav-link">
               <p>
                Siswa 
               </p>
             </a>
           </li>
           <li class="nav-item">
-           <a href="student.php" class="nav-link">
+           <a href="abarang.php" class="nav-link">
               <p>
                Barang 
               </p>
