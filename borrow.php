@@ -1,6 +1,10 @@
 <?php 
 
 include 'connect.php';
+$id=$_GET['id'];
+
+$result= mysqli_query($conn,"SELECT judul FROM `buku` WHERE idBuku='$id'");
+
 $result1= mysqli_query($conn,"SELECT * FROM pinjambuku ");
 $rowCount= mysqli_num_rows($result1);
 $rowCount+=1;
@@ -32,7 +36,7 @@ if(isset($_POST['submit'])){
 try{
   mysqli_query($conn,"INSERT INTO `pinjambuku` (`idPinjam`,`idBuku`,`noInduk`,`namaSiswa`,`namaBuku`,`tanggalPinjam`,
   `tanggalKembali`) VALUES ('$idPinjam','$idbookTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali')");
-  mysqli_query($conn, "UPDATE buku SET  status='available'  WHERE idBuku='$idbookTemp'");
+
 }catch (mysqli_sql_exception $e){
   var_dump($e);
   exit;
@@ -40,6 +44,7 @@ try{
   
 
   if(mysqli_affected_rows($conn)> 0){
+    mysqli_query($conn, "UPDATE buku SET  status='unavailable'  WHERE idBuku='$idbookTemp'");
     header("Location: dashboard.php");
   }else{
     echo "gagal";
@@ -212,8 +217,9 @@ try{
           <div class="card">
             <div class="card-body">
             <form action="borrow.php" method="post">
+            <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Judul</label>
-            <input type="text" name="judul" class="form-control my-3 py-2" required>
+            <input type="text" name="judul" class="form-control my-3 py-2" value="<?= $row['judul'] ?> "required>
             <label for="title">Nama</label>
             <input type="text" name="nama" class="form-control my-3 py-2" required>
             <label for="title">Tanggal</label>
@@ -221,7 +227,7 @@ try{
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>
-
+            <?php endwhile; ?>
           </form>
             </div>
           </div>

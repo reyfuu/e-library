@@ -2,30 +2,7 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
-  }
-}
-
-  
-  $result= mysqli_query($conn,"SELECT * FROM barang WHERE status='available'");
-
+  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
 
 
 ?>
@@ -34,7 +11,7 @@ if(!empty($_GET['status'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Dashboard Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -108,82 +85,20 @@ if(!empty($_GET['status'])){
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="barang.php" class="nav-link">
+              <a href="dpBarang.php" class="nav-link">
                 <p>
                   Barang
                 </p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="dpBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
               </a>
             </li>
           </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Tambah
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Pinjam
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>s
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -228,21 +143,24 @@ if(!empty($_GET['status'])){
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
                 <td>No</td>
-                <td>Nama Barang</td>
-                <td>Status</td>
+                <td>Judul Buku</td>
+                <td>Nama Pengarang</td>
+                <td>Publikasi</td>
+                <td>Edisi</td>
+                <td>status</td>
                 <td>Aksi</td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <?php while($row = mysqli_fetch_assoc($result1)): ?>
                 <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
+                <td><?= $row['judul'] ?></td>
+                <td><?= $row['nama'] ?></td>
+                <td><?= $row['publikasi'] ?></td>
+                <td><?= $row['edisi'] ?></td>
                 <td><?= $row['status'] ?></td>
-
               <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
+                <a href="psbuku.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
 
               </td>
               </tr>
@@ -253,10 +171,6 @@ if(!empty($_GET['status'])){
           </div>
         </div>
 
-
-        <br>
-        <!-- Small boxes (Stat box) -->
-         
         </div>
 
        

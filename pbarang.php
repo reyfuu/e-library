@@ -1,6 +1,11 @@
 <?php 
 
 include 'connect.php';
+
+$id=$_GET['id'];
+
+$result= mysqli_query($conn,"SELECT namabarang FROM `barang` WHERE idbarang='$id'");
+
 $result1= mysqli_query($conn,"SELECT * FROM pinjam ");
 $rowCount= mysqli_num_rows($result1);
 $rowCount+=1;
@@ -40,7 +45,8 @@ try{
   
 
   if(mysqli_affected_rows($conn)> 0){
-    header("Location: dashboard.php");
+    mysqli_query($conn, "UPDATE barang SET  status='unavailable'  WHERE idbarang='$idbarangTemp'");
+    header("Location: barang.php");
   }else{
     echo "gagal";
     echo mysqli_error($conn);
@@ -212,8 +218,9 @@ try{
           <div class="card">
             <div class="card-body">
             <form action="pbarang.php" method="post">
+              <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Nama Barang</label>
-            <input type="text" name="namaBarang" class="form-control my-3 py-2" required>
+            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required>
             <label for="title">Nama Siswa</label>
             <input type="text" name="nama" class="form-control my-3 py-2" required>
             <label for="title">Tanggal</label>
@@ -221,7 +228,7 @@ try{
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>
-
+            <?php endwhile ?>
           </form>
             </div>
           </div>

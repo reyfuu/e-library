@@ -24,8 +24,8 @@ if(!empty($_GET['status'])){
 }
 
   
-  $result= mysqli_query($conn,"SELECT * FROM barang WHERE status='available'");
 
+  $result1= mysqli_query($conn,"SELECT * FROM siswa ");
 
 
 ?>
@@ -34,7 +34,7 @@ if(!empty($_GET['status'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Dashboard Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -121,6 +121,13 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -153,37 +160,6 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Pinjam
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>s
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -228,21 +204,21 @@ if(!empty($_GET['status'])){
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
                 <td>No</td>
-                <td>Nama Barang</td>
-                <td>Status</td>
+                <td>No Induk</td>
+                <td>Nama </td>
+                <td>Kelas</td>
                 <td>Aksi</td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <?php while($row = mysqli_fetch_assoc($result1)): ?>
                 <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['status'] ?></td>
-
+                <td><?= $row['noInduk'] ?></td>
+                <td><?= $row['nama'] ?></td>
+                <td><?= $row['kelas'] ?></td>
               <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
+                <a href="ustudent.php?id=<?=  $row['noInduk']?>" class="nav-link">Update</a>
+                <a href="dstudent.php?id=<?=  $row['noInduk']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
 
               </td>
               </tr>
@@ -253,10 +229,6 @@ if(!empty($_GET['status'])){
           </div>
         </div>
 
-
-        <br>
-        <!-- Small boxes (Stat box) -->
-         
         </div>
 
        
