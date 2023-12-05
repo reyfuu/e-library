@@ -2,7 +2,6 @@
 
 include 'connect.php';
 
-  $result= mysqli_query($conn,"SELECT * FROM barang WHERE status='available'");
 
 ?>
 <!DOCTYPE html>
@@ -116,9 +115,9 @@ include 'connect.php';
             <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action=""  class="d-flex">
+              <form action="dpBarang.php" method="get"  class="d-flex">
                 <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
+                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -144,17 +143,28 @@ include 'connect.php';
               <tr>
                 <td>No</td>
                 <td>Nama Barang</td>
-                <td>Stok</td>
-                <td>Status</td>
                 <td>Aksi</td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <?php 
+              
+              if(isset($_GET['cari'])){
+                $pencarian=$_GET['cari'];
+                $query="SELECT * FROM barang 
+                WHERE 
+                idbarang LIKE '%$pencarian%' OR
+                namabarang LIKE '%$pencarian%' OR
+                status LIKE '%$pencarian%'";
+              }else{
+                $query= "SELECT * FROM barang WHERE status='available'";
+              }
+
+              $result=mysqli_query($conn,$query);
+              
+              while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['stok'] ?></td>
-                <td><?= $row['status'] ?></td>
 
               <td>
                 <a href="psbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
@@ -212,6 +222,6 @@ include 'connect.php';
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script src="script.js"></script>
+
 </body>
 </html>

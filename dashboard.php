@@ -23,9 +23,7 @@ if(!empty($_GET['status'])){
   }
 }
 
-  
 
-  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
 
 
 ?>
@@ -121,24 +119,17 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="student.php" class="nav-link">
-                <p>
-                  Siswa
-                </p>
-              </a>
-            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
-                 Tambah
+                 Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="add.php" class="nav-link">
+              <a href="dpaBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -146,14 +137,7 @@ if(!empty($_GET['status'])){
             </li>
           </li>
           <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
+           <a href="dpaBarang.php" class="nav-link">
               <p>
                Barang 
               </p>
@@ -177,9 +161,9 @@ if(!empty($_GET['status'])){
             <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action=""  class="d-flex">
+              <form action="dashboard.php"  class="d-flex" method="get" >
                 <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
+                  <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -213,7 +197,25 @@ if(!empty($_GET['status'])){
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result1)): ?>
+              <?php 
+              
+              if(isset($_GET['cari'])){
+                $pencarian=$_GET['cari'];
+                $query= "SELECT * FROM buku 
+                WHERE 
+                judul LIKE '%$pencarian%' OR
+                nama LIKE '%$pencarian%' OR
+                publikasi LIKE '%$pencarian%' OR
+                edisi LIKE '%$pencarian%' 
+                ";
+              }else{
+                $query="SELECT * FROM buku WHERE status='available'";
+              }
+              
+                
+
+              $result1= mysqli_query($conn,$query);
+              while($row = mysqli_fetch_assoc($result1)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['judul'] ?></td>
                 <td><?= $row['nama'] ?></td>
@@ -223,6 +225,7 @@ if(!empty($_GET['status'])){
               <td>
                 <a href="bupdate.php?id=<?=  $row['idBuku']?>" class="nav-link">Update</a>
                 <a href="borrow.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
+                <a href="add.php" class="nav-link">Tambah</a>
 
               </td>
               </tr>
@@ -255,8 +258,7 @@ if(!empty($_GET['status'])){
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -274,6 +276,6 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script src="script.js"></script>
+
 </body>
 </html>

@@ -2,7 +2,6 @@
 
 include 'connect.php';
 
-  $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
 
 
 ?>
@@ -116,9 +115,9 @@ include 'connect.php';
             <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action=""  class="d-flex">
+              <form action="dpBuku.php" method="get"  class="d-flex">
                 <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
+                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -152,13 +151,29 @@ include 'connect.php';
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result1)): ?>
+              <?php 
+              if(isset($_GET['cari'])){
+                $pencarian=$_GET['cari'];
+                $query= "SELECT * FROM buku 
+                WHERE 
+                judul LIKE '%$pencarian%' OR
+                nama LIKE '%$pencarian%' OR
+                publikasi LIKE '%$pencarian%' OR
+                edisi LIKE '%$pencarian%' 
+                ";
+              }else{
+                $query="SELECT * FROM buku WHERE status='available'";
+              }
+              
+                
+
+              $result1= mysqli_query($conn,$query);
+              while($row = mysqli_fetch_assoc($result1)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['judul'] ?></td>
                 <td><?= $row['nama'] ?></td>
                 <td><?= $row['publikasi'] ?></td>
                 <td><?= $row['edisi'] ?></td>
-                <td><?= $row['status'] ?></td>
               <td>
                 <a href="psbuku.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
 
@@ -212,6 +227,6 @@ include 'connect.php';
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script src="script.js"></script>
+
 </body>
 </html>

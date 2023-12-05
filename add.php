@@ -156,13 +156,13 @@ if(isset($_POST['submit'])){
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
-                 Tambah
+                 Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="add.php" class="nav-link">
+              <a href="dpaBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -170,14 +170,7 @@ if(isset($_POST['submit'])){
             </li>
           </li>
           <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
+           <a href="dpaBarang.php" class="nav-link">
               <p>
                Barang 
               </p>

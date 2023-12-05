@@ -22,12 +22,6 @@ if(!empty($_GET['status'])){
       break;
   }
 }
-
-  
-  $result= mysqli_query($conn,"SELECT * FROM barang WHERE status='available'");
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +54,7 @@ if(!empty($_GET['status'])){
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader -->
+  <!-- Preloader --> 
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
@@ -125,44 +119,13 @@ if(!empty($_GET['status'])){
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
-                 Tambah
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
                  Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="add.php" class="nav-link">
+              <a href="dpaBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -170,20 +133,13 @@ if(!empty($_GET['status'])){
             </li>
           </li>
           <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
+           <a href="dpaBarang.php" class="nav-link">
               <p>
                Barang 
               </p>
             </a>
           </li>
-          </ul>s
+          </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -201,9 +157,9 @@ if(!empty($_GET['status'])){
             <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action=""  class="d-flex">
+              <form action="barang.php"  class="d-flex" method="get">
                 <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
+                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -222,10 +178,10 @@ if(!empty($_GET['status'])){
 
     <?php } ?>
     <!-- Main content -->
-      <div class="container  ">
+      <div class="container">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
+            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
               <tr>
                 <td>No</td>
                 <td>Nama Barang</td>
@@ -234,7 +190,20 @@ if(!empty($_GET['status'])){
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result)): ?>
+              <?php
+              if(isset($_GET['cari'])){
+                $pencarian=$_GET['cari'];
+                $query="SELECT * FROM barang 
+                WHERE 
+                idbarang LIKE '%$pencarian%' OR
+                namabarang LIKE '%$pencarian%' OR
+                status LIKE '%$pencarian%'";
+              }else{
+                $query= "SELECT * FROM barang WHERE status='available'";
+              }
+
+              $result=mysqli_query($conn,$query);
+              while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['namabarang'] ?></td>
                 <td><?= $row['status'] ?></td>
@@ -243,6 +212,7 @@ if(!empty($_GET['status'])){
                 <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
                 <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
                 <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
+                <a href="sbarang.php" class="nav-link">Tambah</a>
 
               </td>
               </tr>
@@ -279,8 +249,7 @@ if(!empty($_GET['status'])){
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -298,6 +267,6 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script src="script.js"></script>
+
 </body>
 </html>

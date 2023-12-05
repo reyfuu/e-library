@@ -129,11 +129,8 @@ try{
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
-        
           <li class="nav-item menu-open">
           <a  class="nav-link active">
-             
               <p>
                  Dashboard
                 <i class="right fas fa-angle-left"></i>
@@ -157,15 +154,14 @@ try{
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
-          
               <p>
-                 Tambah
+                 Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
-          <li class="nav-item">
-              <a href="add.php" class="nav-link">
+            <li class="nav-item">
+              <a href="dpaBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -173,14 +169,7 @@ try{
             </li>
           </li>
           <li class="nav-item">
-           <a href="student.php" class="nav-link">
-              <p>
-               Siswa 
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="student.php" class="nav-link">
+           <a href="dpaBarang.php" class="nav-link">
               <p>
                Barang 
               </p>

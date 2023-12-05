@@ -25,7 +25,7 @@ if(isset($_POST['submit'])){
 
 
         $idBarang=$row[0];
-        $namaBarang=$row[1];
+        $namsbarang=$row[1];
 
    
 
@@ -33,11 +33,11 @@ if(isset($_POST['submit'])){
         $prevResult= $conn->query($prevQuery);
 
         if($prevResult->num_rows>0){
-          $conn->query("UPDATE barang SET namabarang='$namaBarang',status='available' 
+          $conn->query("UPDATE barang SET namsbarang='$namsbarang',status='available' 
           WHERE idbarang='$idBarang' ");
         }else{
-          mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namabarang`,`status`) 
-          VALUES ('$idBarang','$namaBarang','available')");
+          mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namsbarang`,`status`) 
+          VALUES ('$idBarang','$namsbarang','available')");
         }
       }
       $qstring='?status=succ';
@@ -177,7 +177,31 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="abarang.php" class="nav-link">
+           <a href="sbarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Pinjam
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="dpaBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="dpsbarang.php" class="nav-link">
               <p>
                Barang 
               </p>
@@ -213,7 +237,7 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="abarang.php" method="post" enctype="multipart/form-data">
+            <form action="sbarang.php" method="post" enctype="multipart/form-data">
             <label for="title">Import excel file</label>
             <input type="file" name="file" class="form-control " required>
             <div class="text-center">
