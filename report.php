@@ -100,6 +100,37 @@ include 'connect.php';
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="sadd.php" class="nav-link">
+              <p>
+               Siswa
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="sbarang.php" class="nav-link">
+              <p>
+               Barang
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
                  Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
@@ -121,6 +152,13 @@ include 'connect.php';
             </a>
           </li>
           </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -134,49 +172,37 @@ include 'connect.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0">Dashboard</h1><br>
-           <!-- Search form -->
-            <div class="input-group">
-              <form action="report.php"  class="d-flex" method="get">
-                <div class="form-outline" data-mdb-input-init>
-                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            <a href="pdf.php">Print</a>
-            </div>
+            <h1 class="m-0">Dashboard Report</h1>
           </div><!-- /.col -->
+
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <?php if(!empty($statusMsg)){?>
-      <div class="col-xs-12 p-3">
-        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
-      </div>
 
-    <?php } ?>
     <!-- Main content -->
-      <div class="container">
-        <div class="card">
-          <div class="card-body">
+ 
+      <div class="container ">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="container">
+          <div class="card">
+            <div class="card-body">
+            <form action="pdf.php" method="post" enctype="multipart/form-data">
+            <label for="title">Masukkan No Induk / nama Siswa</label>
+            <input type="text" name="keyword" class="form-control " required>
+            <div class="text-center">
+            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
+            </div>
 
-                <form action="pdf.php" method="post">
-                  <input type="text" name="keyword" required>
-                    <button type="submit" name="submit">Submit</button>
-
-            </form>
+          </form>
+            </div>
+          </div>
+ 
           </div>
         </div>
-
-
-        <br>
         <!-- Small boxes (Stat box) -->
-         
-        </div>
+
 
        
 <!-- ./wrapper -->

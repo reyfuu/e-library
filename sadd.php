@@ -173,14 +173,14 @@ if(isset($_POST['submit'])){
           <li class="nav-item">
            <a href="sadd.php" class="nav-link">
               <p>
-               Siswa 
+               Siswa
               </p>
             </a>
           </li>
           <li class="nav-item">
            <a href="sbarang.php" class="nav-link">
               <p>
-               Barang 
+               Barang
               </p>
             </a>
           </li>
@@ -209,6 +209,13 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

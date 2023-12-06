@@ -155,6 +155,37 @@ try{
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="sadd.php" class="nav-link">
+              <p>
+               Siswa
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="sbarang.php" class="nav-link">
+              <p>
+               Barang
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
                  Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
@@ -176,6 +207,13 @@ try{
             </a>
           </li>
           </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -189,7 +227,7 @@ try{
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Dashboard Pinjam Buku</h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->

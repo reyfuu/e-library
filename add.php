@@ -156,6 +156,37 @@ if(isset($_POST['submit'])){
           <li class="nav-item menu-open">
           <a  class="nav-link active">
               <p>
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="sadd.php" class="nav-link">
+              <p>
+               Siswa
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="sbarang.php" class="nav-link">
+              <p>
+               Barang
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
                  Pinjam
                 <i class="right fas fa-angle-left"></i>
               </p>
@@ -177,6 +208,13 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

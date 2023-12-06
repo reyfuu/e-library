@@ -10,11 +10,11 @@ $result= mysqli_query($conn,"SELECT * FROM `siswa` WHERE noInduk='$id'");
 if(isset($_POST['submit'])){
 
     $noInduk=$_POST['noInduk'];
-    $anam=$_POST['nama'];
+    $nama=$_POST['nama'];
     $kelas=$_POST['kelas'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE siswa SET kelas='$kelas' WHERE noInduk='$noInduk'");
+      $result= mysqli_query($conn, "UPDATE siswa SET nama='$nama',kelas='$kelas' WHERE noInduk='$noInduk'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -70,6 +70,7 @@ if(isset($_POST['submit'])){
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
           <label for="publication">Kelas</label>
+          <input type="text" class="form-control" name="nama" value="<?= $row['nama'] ?>">
           <input type="text" class="form-control"  name="kelas" value="<?= $row['kelas']; ?>">
 
           <?php endwhile; ?>

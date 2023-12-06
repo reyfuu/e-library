@@ -79,7 +79,7 @@ if(isset($_POST['submit'])){
         
   }
 $mpdf = new \Mpdf\Mpdf();
-
+$mpdf->SetHeader('<img src="logo.png"/>');
 $mpdf->WriteHTML($html);
 $file="pdf.php";
 $mpdf->Output($file,'I');
