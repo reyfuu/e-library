@@ -4,20 +4,17 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
-$result= mysqli_query($conn,"SELECT * FROM `buku` WHERE idBuku='$id'");
+$result= mysqli_query($conn,"SELECT * FROM `siswa` WHERE noInduk='$id'");
 
 
 if(isset($_POST['submit'])){
 
-    $idBuku=$_POST['idBuku'];
-    $judul=$_POST['judul'];
+    $noInduk=$_POST['noInduk'];
     $nama=$_POST['nama'];
-    $publikasi=$_POST['publikasi'];
-    $edisi=$_POST['edisi'];
-    $status=$_POST['status'];
+    $kelas=$_POST['kelas'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE buku SET judul='$judul', nama='$nama', publikasi='$publikasi', edisi='$edisi', status='$status'  WHERE idBuku='$idBuku'");
+      $result= mysqli_query($conn, "UPDATE siswa SET nama='$nama',kelas='$kelas' WHERE noInduk='$noInduk'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -30,7 +27,7 @@ if(isset($_POST['submit'])){
     $check= mysqli_affected_rows($conn);
     if($check> 0){
      
-        header("Location:dashboard.php");
+        header("Location:student.php");
     }
     else{
         echo "<script>
@@ -68,20 +65,14 @@ if(isset($_POST['submit'])){
     <div class="card-body">
    
 
-      <form action="bupdate.php" method="post">
-      <input type="hidden" name="idBuku" value="<?= $id ?>">
+      <form action="ustudent.php" method="post">
+      <input type="hidden" name="noInduk" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="title">Judul</label>
-          <input type="text" class="form-control"  name="judul" value="<?= $row["judul"];?>">
-          <label for="name">Nama</label>
-          <input type="text" class="form-control"  name="nama" value="<?= $row['nama']; ?>">
-          <label for="publication">Publikasi</label>
-          <input type="text" class="form-control"  name="publikasi" value="<?= $row['publikasi']; ?>">
-          <label for="edition">Edisi</label>
-          <input type="text" class="form-control"  name="edisi" value="<?= $row['edisi'] ;?>">
-          <label for="status">Status</label>
-          <input type="text" class="form-control"  name="status" value="<?= $row['status'] ;?>">
+          <label for="publication">Kelas</label>
+          <input type="text" class="form-control" name="nama" value="<?= $row['nama'] ?>">
+          <input type="text" class="form-control"  name="kelas" value="<?= $row['kelas']; ?>">
+
           <?php endwhile; ?>
         </div>
         <div class="row">

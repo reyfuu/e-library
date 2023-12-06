@@ -4,20 +4,17 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
-$result= mysqli_query($conn,"SELECT * FROM `buku` WHERE idBuku='$id'");
+$result= mysqli_query($conn,"SELECT * FROM `barang` WHERE idbarang='$id'");
 
 
 if(isset($_POST['submit'])){
 
-    $idBuku=$_POST['idBuku'];
-    $judul=$_POST['judul'];
+    $idBarang=$_POST['idBarang'];
     $nama=$_POST['nama'];
-    $publikasi=$_POST['publikasi'];
-    $edisi=$_POST['edisi'];
     $status=$_POST['status'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE buku SET judul='$judul', nama='$nama', publikasi='$publikasi', edisi='$edisi', status='$status'  WHERE idBuku='$idBuku'");
+      $result= mysqli_query($conn, "UPDATE barang SET namabarang='$nama', status='$status'  WHERE idbarang='$idBarang'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -30,7 +27,7 @@ if(isset($_POST['submit'])){
     $check= mysqli_affected_rows($conn);
     if($check> 0){
      
-        header("Location:dashboard.php");
+        header("Location:barang.php");
     }
     else{
         echo "<script>
@@ -49,7 +46,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Update Buku</title>
+  <title>Update Book</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -68,20 +65,14 @@ if(isset($_POST['submit'])){
     <div class="card-body">
    
 
-      <form action="bupdate.php" method="post">
-      <input type="hidden" name="idBuku" value="<?= $id ?>">
+      <form action="ubarang.php" method="post">
+      <input type="hidden" name="idBarang" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="title">Judul</label>
-          <input type="text" class="form-control"  name="judul" value="<?= $row["judul"];?>">
-          <label for="name">Nama</label>
-          <input type="text" class="form-control"  name="nama" value="<?= $row['nama']; ?>">
-          <label for="publication">Publikasi</label>
-          <input type="text" class="form-control"  name="publikasi" value="<?= $row['publikasi']; ?>">
-          <label for="edition">Edisi</label>
-          <input type="text" class="form-control"  name="edisi" value="<?= $row['edisi'] ;?>">
-          <label for="status">Status</label>
-          <input type="text" class="form-control"  name="status" value="<?= $row['status'] ;?>">
+          <label for="title">Nama Barang</label>
+          <input type="text" class="form-control"  name="nama" value="<?= $row["namabarang"];?>">
+          <label for="name">Status</label>
+          <input type="text" class="form-control"  name="status" value="<?= $row['status']; ?>">
           <?php endwhile; ?>
         </div>
         <div class="row">

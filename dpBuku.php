@@ -3,9 +3,6 @@
 include 'connect.php';
 
 
-  
-  $result= mysqli_query($conn,"SELECT * FROM books ");
-
 
 ?>
 <!DOCTYPE html>
@@ -13,7 +10,7 @@ include 'connect.php';
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Books</title>
+  <title> Dashboard Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -51,11 +48,7 @@ include 'connect.php';
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-
-
     </ul>
-
-
   </nav>
   <!-- /.navbar -->
 
@@ -64,7 +57,7 @@ include 'connect.php';
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-library</span>
+      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
     </a>
 
     <!-- Sidebar -->
@@ -77,43 +70,34 @@ include 'connect.php';
         </div>
       </div>
 
-
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
           <li class="nav-item menu-open">
-          <a href="dashboard.php" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+          <a  class="nav-link active">
               <p>
-                Dashboard
-
+                 Dashboard
+                <i class="right fas fa-angle-left"></i>
               </p>
           </a>
-
-
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="books.php" class="nav-link">
+              <a href="dpBarang.php" class="nav-link">
                 <p>
-                  Books
+                  Barang
                 </p>
               </a>
             </li>
-
-          </li>
-
-          <li class="nav-item">
-          <a href="student.php" class="nav-link">
-              <p>
-               Student
-                
-              </p>
-            </a>
-          </li>
-          
+            <li class="nav-item">
+              <a href="dpBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -127,51 +111,81 @@ include 'connect.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-left">
-            <h1 class="m-0">Books</h1>&nbsp;&nbsp;&nbsp;
-            <a href="add.php"><button  class="btn btn-primary " >Add</button></a>
-            </ol>
-          </div><!-- /.col -->
 
+            <h1 class="m-0">Dashboard Buku</h1><br>
+           <!-- Search form -->
+            <div class="input-group">
+              <form action="dpBuku.php" method="get"  class="d-flex">
+                <div class="form-outline" data-mdb-input-init>
+                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
+                </div>
+                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
+                  <i class="fas fa-search"></i>
+                </button>
+            </form>
+            </div>
+          </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+    <?php if(!empty($statusMsg)){?>
+      <div class="col-xs-12 p-3">
+        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
+      </div>
 
+    <?php } ?>
     <!-- Main content -->
- 
-      <div class="container ">
-        
-        <!-- Small boxes (Stat box) -->
-          <table border="1" cellpadding="10" class="table table-bordered table-hover">
-          <tr>
-              <td>No</td>
-              <td>Action</td>
-              <td>Title</td>
-              <td>Name</td>
-              <td>Publication Year</td>
-              <td>Edition</td>
-              <td>status</td>
-            </tr>
-            <?php $i=1; ?>
-          <?php while($row = mysqli_fetch_assoc($result)): ?>
-   
-            <tr>
-              <td><?= $i; ?></td>
-              <td>
-                <a href="bupdate.php?id=<?=  $row['idbook'];?>" class="nav-link">Update</a>
+      <div class="container  ">
+        <div class="card">
+          <div class="card-body">
+            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
+              <tr>
+                <td>No</td>
+                <td>Judul Buku</td>
+                <td>Nama Pengarang</td>
+                <td>Publikasi</td>
+                <td>Edisi</td>
+                <td>status</td>
+                <td>Aksi</td>
+              </tr>
+              <tr>
+              <?php $i=1; ?>
+              <?php 
+              if(isset($_GET['cari'])){
+                $pencarian=$_GET['cari'];
+                $query= "SELECT * FROM buku 
+                WHERE 
+                judul LIKE '%$pencarian%' OR
+                nama LIKE '%$pencarian%' OR
+                publikasi LIKE '%$pencarian%' OR
+                edisi LIKE '%$pencarian%' 
+                ";
+              }else{
+                $query="SELECT * FROM buku WHERE status='available'";
+              }
+              
+                
 
-                <a href="bdelete.php?id=<?= $row['idbook'];?>" class="nav-link">Delete</a>
+              $result1= mysqli_query($conn,$query);
+              while($row = mysqli_fetch_assoc($result1)): ?>
+                <td><?= $i; ?></td>
+                <td><?= $row['judul'] ?></td>
+                <td><?= $row['nama'] ?></td>
+                <td><?= $row['publikasi'] ?></td>
+                <td><?= $row['edisi'] ?></td>
+              <td>
+                <a href="psbuku.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
+
               </td>
-              <td><?= $row['title']; ?></td>
-              <td><?= $row['name']; ?></td>
-              <td><?= $row['publication year']; ?></td>
-              <td><?= $row['edition']; ?></td>
-              <td><?= $row['status']; ?></td>
-            </tr>
-            <?php $i++; ?>
-            <?php endwhile; ?>
+              </tr>
+              <?php $i++; ?>
+              <?php endwhile; ?>
+
             </table>
+          </div>
+        </div>
+
         </div>
 
        
@@ -179,7 +193,9 @@ include 'connect.php';
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
+
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
@@ -211,5 +227,6 @@ include 'connect.php';
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+
 </body>
 </html>

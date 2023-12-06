@@ -2,33 +2,14 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
-  }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Dashboard Report</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -191,81 +172,37 @@ if(!empty($_GET['status'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0">Dashboard Barang</h1><br>
-           <!-- Search form -->
-            <div class="input-group">
-              <form action="barang.php"  class="d-flex" method="get">
-                <div class="form-outline" data-mdb-input-init>
-                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            </div>
+            <h1 class="m-0">Dashboard Report</h1>
           </div><!-- /.col -->
+
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <?php if(!empty($statusMsg)){?>
-      <div class="col-xs-12 p-3">
-        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
-      </div>
 
-    <?php } ?>
     <!-- Main content -->
-      <div class="container">
-        <div class="card">
-          <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
-              <tr>
-                <td>No</td>
-                <td>Nama Barang</td>
-                <td>Status</td>
-                <td>Aksi</td>
-              </tr>
-              <tr>
-              <?php $i=1; ?>
-              <?php
-              if(isset($_GET['cari'])){
-                $pencarian=$_GET['cari'];
-                $query="SELECT * FROM barang 
-                WHERE 
-                idbarang LIKE '%$pencarian%' OR
-                namabarang LIKE '%$pencarian%' OR
-                status LIKE '%$pencarian%'";
-              }else{
-                $query= "SELECT * FROM barang WHERE status='available'";
-              }
+ 
+      <div class="container ">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="container">
+          <div class="card">
+            <div class="card-body">
+            <form action="pdf.php" method="post" enctype="multipart/form-data">
+            <label for="title">Masukkan No Induk / nama Siswa</label>
+            <input type="text" name="keyword" class="form-control " required>
+            <div class="text-center">
+            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
+            </div>
 
-              $result=mysqli_query($conn,$query);
-              while($row = mysqli_fetch_assoc($result)): ?>
-                <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['status'] ?></td>
-
-              <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
-                <a href="sbarang.php" class="nav-link">Tambah</a>
-
-              </td>
-              </tr>
-              <?php $i++; ?>
-              <?php endwhile; ?>
-
-            </table>
+          </form>
+            </div>
+          </div>
+ 
           </div>
         </div>
-
-
-        <br>
         <!-- Small boxes (Stat box) -->
-         
-        </div>
+
 
        
 <!-- ./wrapper -->

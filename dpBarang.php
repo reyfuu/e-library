@@ -2,26 +2,7 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
-  }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +35,7 @@ if(!empty($_GET['status'])){
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader --> 
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
@@ -102,82 +83,21 @@ if(!empty($_GET['status'])){
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="barang.php" class="nav-link">
+              <a href="dpBarang.php" class="nav-link">
                 <p>
                   Barang
                 </p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="dpBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
               </a>
             </li>
           </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Tambah
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
-              <p>
-               Barang
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Pinjam
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="dpaBuku.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="dpaBarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item">
-           <a href="report.php" class="nav-link">
-              <p>
-               Report
-              </p>
-            </a>
-          </li>
+
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -192,10 +112,10 @@ if(!empty($_GET['status'])){
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard Barang</h1><br>
+            <h1 class="m-0">Dashboard Barang </h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action="barang.php"  class="d-flex" method="get">
+              <form action="dpBarang.php" method="get"  class="d-flex">
                 <div class="form-outline" data-mdb-input-init>
                 <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
@@ -216,19 +136,19 @@ if(!empty($_GET['status'])){
 
     <?php } ?>
     <!-- Main content -->
-      <div class="container">
+      <div class="container  ">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
+            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
                 <td>No</td>
                 <td>Nama Barang</td>
-                <td>Status</td>
                 <td>Aksi</td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php
+              <?php 
+              
               if(isset($_GET['cari'])){
                 $pencarian=$_GET['cari'];
                 $query="SELECT * FROM barang 
@@ -241,17 +161,13 @@ if(!empty($_GET['status'])){
               }
 
               $result=mysqli_query($conn,$query);
+              
               while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['status'] ?></td>
 
               <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
-                <a href="sbarang.php" class="nav-link">Tambah</a>
-
+                <a href="psbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
               </td>
               </tr>
               <?php $i++; ?>
@@ -287,7 +203,8 @@ if(!empty($_GET['status'])){
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->

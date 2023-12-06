@@ -2,21 +2,56 @@
 
 include 'connect.php';
 
+include 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 if(isset($_POST['submit'])){
-  $noInduk= $_POST['noInduk'];
-  $name=$_POST['name'];
-  $class=$_POST['class'];
+  $excelMimes = array('text/xls', 'text/xlsx', 'application/excel', 'application/vnd.msexcel', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); 
+
+  if(!empty($_FILES['file']['name']) && in_array($_FILES['file']['type'], $excelMimes)){
+
+    if(is_uploaded_file($_FILES['file']['tmp_name'])){
+
+      $reader= new  Xlsx();
+      $spreadsheet= $reader->load($_FILES['file']['tmp_name']);
+      $worksheet = $spreadsheet->getActiveSheet();
+      
+      $worksheet_arr= $worksheet->toArray();
+
+      unset($worksheet_arr[0]);
+
+      foreach($worksheet_arr as $row){
 
 
+        $noInduk=$row[0];
+        $nama=$row[1];
+        $kelas=$row[2];
 
-  mysqli_query($conn,"INSERT INTO `student` (`noInduk`,`name`,`class`) VALUES ('$noInduk','$name','$class')");
- 
-  if(mysqli_affected_rows($conn)> 0){
-    header("Location: student.php");
+   
+
+        $prevQuery="SELECT noInduk FROM siswa WHERE noInduk='$noInduk'";
+        $prevResult= $conn->query($prevQuery);
+
+        if($prevResult->num_rows>0){
+          $conn->query("UPDATE siswa SET nama='$nama',kelas= '$kelas' 
+          WHERE noInduk='$noInduk' ");
+        }else{
+          mysqli_query($conn,"INSERT INTO `siswa` (`noInduk`,`nama`,`kelas`) 
+          VALUES ('$noInduk','$nama','$kelas')");
+        }
+      }
+      $qstring='?status=succ';
+    }else{
+      $qstring='?status=err';
+    }
   }else{
-    echo "gagal";
-    echo mysqli_error($conn);
+    $qstring='?status=invalid_file';
   }
+
+  header("Location: student.php".$qstring);
+  
+
 }
 
 ?>
@@ -25,7 +60,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Add Student</title>
+  <title> Add Siswa</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -96,36 +131,91 @@ if(isset($_POST['submit'])){
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
           <li class="nav-item menu-open">
-          <a href="dashboard.php" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+          <a  class="nav-link active">
               <p>
-                Dashboard
-
+                 Dashboard
+                <i class="right fas fa-angle-left"></i>
               </p>
           </a>
-
-
+          <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="books.php" class="nav-link">
+              <a href="barang.php" class="nav-link">
                 <p>
-                  Books
+                  Barang
                 </p>
               </a>
             </li>
-
-          </li>
-
-          <li class="nav-item">
-           <a href="student.php" class="nav-link">
+            <li class="nav-item">
+              <a href="dashboard.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
               <p>
-               Student
-                
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="sadd.php" class="nav-link">
+              <p>
+               Siswa
               </p>
             </a>
           </li>
-          
+          <li class="nav-item">
+           <a href="sbarang.php" class="nav-link">
+              <p>
+               Barang
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Pinjam
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="dpaBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="dpaBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -155,14 +245,9 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="sadd.php" method="post">
-            <label for="noInduk">No Induk</label>
-            <input type="text" name="noInduk" class="form-control my-3 py-2" required>
-            <label for="title">Name</label>
-            <input type="text" name="name" class="form-control my-3 py-2" required>
-            <label for="class">Class</label>
-            <input type="text" name="class" class="form-control my-3 py-2" required>
-
+            <form action="sadd.php" method="post" enctype="multipart/form-data">
+            <label for="title">Import excel file</label>
+            <input type="file" name="file" class="form-control " required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>

@@ -2,33 +2,64 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
+$id=$_GET['id'];
+
+$result= mysqli_query($conn,"SELECT namabarang FROM `barang` WHERE idbarang='$id'");
+
+$result1= mysqli_query($conn,"SELECT * FROM pinjam ");
+$rowCount= mysqli_num_rows($result1);
+$rowCount+=1;
+ $idPinjam='PJBR'. strval($rowCount);
+
+if(isset($_POST['submit'])){
+  $namaBarang=$_POST['namaBarang'];
+  $nama=$_POST['nama'];
+  $date=$_POST['date'];
+  $tanggalKembali= strtotime($date);
+  $tanggalKembali= strtotime("+7 day", $tanggalKembali);
+  $tanggalKembali= date('Y/m/d', $tanggalKembali);
+
+
+  $idbarangTemp= null;
+  $noIndukTemp= null;
+  
+  $idBarang= mysqli_query($conn,"SELECT idbarang FROM barang WHERE namabarang='$namaBarang'");
+  $noInduk= mysqli_query($conn,"SELECT noInduk FROM siswa WHERE nama='$nama'");
+
+
+  while($row= mysqli_fetch_array($idBarang)){
+    $idbarangTemp=$row['idbarang'];
+  }
+  var_dump($idbarangTemp);
+  while($row1=mysqli_fetch_array($noInduk)){
+    $noIndukTemp=$row1['noInduk'];
+  }
+try{
+  mysqli_query($conn,"INSERT INTO `pinjam` (`idpinjam`,`noInduk`,`idbarang`,`namaBarang`,`namaSiswa`,`tanggalPinjam`,
+  `tanggalKembali`) VALUES ('$idPinjam','$noIndukTemp','$idbarangTemp','$namaBarang','$nama','$date','$tanggalKembali')");
+  
+}catch (mysqli_sql_exception $e){
+  var_dump($e);
+  exit;
+}
+  
+
+  if(mysqli_affected_rows($conn)> 0){
+    mysqli_query($conn, "UPDATE barang SET  status='unavailable'  WHERE idbarang='$idbarangTemp'");
+    header("Location: dpBarang.php");
+  }else{
+    echo "gagal";
+    echo mysqli_error($conn);
   }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Pinjam Barang</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -54,7 +85,7 @@ if(!empty($_GET['status'])){
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader --> 
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
@@ -66,7 +97,11 @@ if(!empty($_GET['status'])){
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+
+
     </ul>
+
+
   </nav>
   <!-- /.navbar -->
 
@@ -75,7 +110,7 @@ if(!empty($_GET['status'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
+      <span class="brand-text font-weight-light">E-library</span>
     </a>
 
     <!-- Sidebar -->
@@ -88,13 +123,18 @@ if(!empty($_GET['status'])){
         </div>
       </div>
 
+
+
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+        
           <li class="nav-item menu-open">
           <a  class="nav-link active">
+             
               <p>
                  Dashboard
                 <i class="right fas fa-angle-left"></i>
@@ -102,82 +142,21 @@ if(!empty($_GET['status'])){
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="barang.php" class="nav-link">
+              <a href="dpBarang.php" class="nav-link">
                 <p>
                   Barang
                 </p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="dpBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
               </a>
             </li>
           </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Tambah
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="add.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="sadd.php" class="nav-link">
-              <p>
-               Siswa
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
-              <p>
-               Barang
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item menu-open">
-          <a  class="nav-link active">
-              <p>
-                 Pinjam
-                <i class="right fas fa-angle-left"></i>
-              </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="dpaBuku.php" class="nav-link">
-                <p>
-                  Buku
-                </p>
-              </a>
-            </li>
-          </li>
-          <li class="nav-item">
-           <a href="dpaBarang.php" class="nav-link">
-              <p>
-               Barang 
-              </p>
-            </a>
-          </li>
-          </ul>
-          <li class="nav-item">
-           <a href="report.php" class="nav-link">
-              <p>
-               Report
-              </p>
-            </a>
-          </li>
+         
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -191,80 +170,39 @@ if(!empty($_GET['status'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0">Dashboard Barang</h1><br>
-           <!-- Search form -->
-            <div class="input-group">
-              <form action="barang.php"  class="d-flex" method="get">
-                <div class="form-outline" data-mdb-input-init>
-                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            </div>
+            <h1 class="m-0">Dashboard</h1>
           </div><!-- /.col -->
+
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <?php if(!empty($statusMsg)){?>
-      <div class="col-xs-12 p-3">
-        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
-      </div>
 
-    <?php } ?>
     <!-- Main content -->
-      <div class="container">
-        <div class="card">
-          <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
-              <tr>
-                <td>No</td>
-                <td>Nama Barang</td>
-                <td>Status</td>
-                <td>Aksi</td>
-              </tr>
-              <tr>
-              <?php $i=1; ?>
-              <?php
-              if(isset($_GET['cari'])){
-                $pencarian=$_GET['cari'];
-                $query="SELECT * FROM barang 
-                WHERE 
-                idbarang LIKE '%$pencarian%' OR
-                namabarang LIKE '%$pencarian%' OR
-                status LIKE '%$pencarian%'";
-              }else{
-                $query= "SELECT * FROM barang WHERE status='available'";
-              }
-
-              $result=mysqli_query($conn,$query);
-              while($row = mysqli_fetch_assoc($result)): ?>
-                <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['status'] ?></td>
-
-              <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
-                <a href="sbarang.php" class="nav-link">Tambah</a>
-
-              </td>
-              </tr>
-              <?php $i++; ?>
-              <?php endwhile; ?>
-
-            </table>
-          </div>
-        </div>
-
-
-        <br>
+ 
+      <div class="container ">
         <!-- Small boxes (Stat box) -->
-         
+        <div class="row">
+          <div class="container">
+          <div class="card">
+            <div class="card-body">
+            <form action="psbarang.php" method="post">
+              <?php while($row= mysqli_fetch_assoc($result)): ?>
+            <label for="title">Nama Barang</label>
+            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required>
+            <label for="title">Nama Siswa</label>
+            <input type="text" name="nama" class="form-control my-3 py-2" required>
+            <label for="title">Tanggal</label>
+            <input type="date" name="date" class="form-control my-3 py-2" required>
+            <div class="text-center">
+            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
+            </div>
+            <?php endwhile ?>
+          </form>
+            </div>
+          </div>
+ 
+          </div>
         </div>
 
        
@@ -272,13 +210,12 @@ if(!empty($_GET['status'])){
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
-
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
+
 </script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -287,7 +224,8 @@ if(!empty($_GET['status'])){
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -305,6 +243,5 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-
 </body>
 </html>

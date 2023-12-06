@@ -11,8 +11,14 @@ if(isset($_POST['submit'])){
 
     $check= mysqli_num_rows($result);
     if($check> 0){
-
+      if($username=="admin"){
         header("Location:dashboard.php");
+      }
+      else{
+        header("Location:dpBuku.php");
+      }
+
+
     }
     else{
         echo "<script>

@@ -22,13 +22,19 @@ if(!empty($_GET['status'])){
       break;
   }
 }
+
+  
+
+  $result1= mysqli_query($conn,"SELECT * FROM siswa ");
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Dashboard Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -54,7 +60,7 @@ if(!empty($_GET['status'])){
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader --> 
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
@@ -192,12 +198,12 @@ if(!empty($_GET['status'])){
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard Barang</h1><br>
+            <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
             <div class="input-group">
-              <form action="barang.php"  class="d-flex" method="get">
+              <form action=""  class="d-flex">
                 <div class="form-outline" data-mdb-input-init>
-                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
+                  <input type="text" class="form-control me 2" id="keyword"/>
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -216,41 +222,27 @@ if(!empty($_GET['status'])){
 
     <?php } ?>
     <!-- Main content -->
-      <div class="container">
+      <div class="container  ">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
+            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
                 <td>No</td>
-                <td>Nama Barang</td>
-                <td>Status</td>
+                <td>No Induk</td>
+                <td>Nama </td>
+                <td>Kelas</td>
                 <td>Aksi</td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php
-              if(isset($_GET['cari'])){
-                $pencarian=$_GET['cari'];
-                $query="SELECT * FROM barang 
-                WHERE 
-                idbarang LIKE '%$pencarian%' OR
-                namabarang LIKE '%$pencarian%' OR
-                status LIKE '%$pencarian%'";
-              }else{
-                $query= "SELECT * FROM barang WHERE status='available'";
-              }
-
-              $result=mysqli_query($conn,$query);
-              while($row = mysqli_fetch_assoc($result)): ?>
+              <?php while($row = mysqli_fetch_assoc($result1)): ?>
                 <td><?= $i; ?></td>
-                <td><?= $row['namabarang'] ?></td>
-                <td><?= $row['status'] ?></td>
-
+                <td><?= $row['noInduk'] ?></td>
+                <td><?= $row['nama'] ?></td>
+                <td><?= $row['kelas'] ?></td>
               <td>
-                <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
-                <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
-                <a href="sbarang.php" class="nav-link">Tambah</a>
+                <a href="ustudent.php?id=<?=  $row['noInduk']?>" class="nav-link">Update</a>
+                <a href="dstudent.php?id=<?=  $row['noInduk']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
 
               </td>
               </tr>
@@ -261,10 +253,6 @@ if(!empty($_GET['status'])){
           </div>
         </div>
 
-
-        <br>
-        <!-- Small boxes (Stat box) -->
-         
         </div>
 
        
@@ -287,7 +275,8 @@ if(!empty($_GET['status'])){
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
