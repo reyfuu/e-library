@@ -9,7 +9,7 @@ $result= mysqli_query($conn,"SELECT namabarang FROM `barang` WHERE idbarang='$id
 $result1= mysqli_query($conn,"SELECT * FROM pinjam ");
 $rowCount= mysqli_num_rows($result1);
 $rowCount+=1;
- $idPinjam='PJBK'. strval($rowCount);
+ $idPinjam='PJBR'. strval($rowCount);
 
 if(isset($_POST['submit'])){
   $namaBarang=$_POST['namaBarang'];

@@ -144,6 +144,13 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           </ul>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Report
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
