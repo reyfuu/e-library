@@ -78,8 +78,8 @@ if(isset($_POST['submit'])){
         $html.= '</table>';
         
   }
-$mpdf = new \Mpdf\Mpdf();
-$mpdf->SetHeader('<img src="logo.png"/>');
+$mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
+$mpdf->SetHeader('<img src="Header.png"/>');
 $mpdf->WriteHTML($html);
 $file="pdf.php";
 $mpdf->Output($file,'I');
