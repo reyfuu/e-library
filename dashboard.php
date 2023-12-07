@@ -54,6 +54,15 @@ if(!empty($_GET['status'])){
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+  <style>
+    .chartBox{
+      width: 450px;
+    }
+    .chartBox2{
+      width: 100px;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -198,84 +207,47 @@ if(!empty($_GET['status'])){
 
             <h1 class="m-0">Dashboard Buku</h1><br>
            <!-- Search form -->
-            <div class="input-group">
-              <form action="dashboard.php"  class="d-flex" method="get" >
-                <div class="form-outline" data-mdb-input-init>
-                  <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
-                </div>
-                <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
-                  <i class="fas fa-search"></i>
-                </button>
-            </form>
-            </div>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
-    <?php if(!empty($statusMsg)){?>
-      <div class="col-xs-12 p-3">
-        <div class="alert <?= $statusType;?>"><?= $statusMsg; ?></div>
-      </div>
+    <?php 
+    try{
+      $query="SELECT COUNT(idBuku),namaBuku FROM pinjambuku GROUP BY namaBuku ORDER BY COUNT(idBuku) DESC";
 
-    <?php } ?>
-    <!-- Main content -->
-      <div class="container  ">
-        <div class="card">
-          <div class="card-body">
-            <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
-              <tr>
-                <td>No</td>
-                <td>Judul Buku</td>
-                <td>Nama Pengarang</td>
-                <td>Publikasi</td>
-                <td>Edisi</td>
-                <td>status</td>
-                <td>Aksi</td>
-              </tr>
-              <tr>
-              <?php $i=1; ?>
-              <?php 
-              
-              if(isset($_GET['cari'])){
-                $pencarian=$_GET['cari'];
-                $query= "SELECT * FROM buku 
-                WHERE 
-                judul LIKE '%$pencarian%' OR
-                nama LIKE '%$pencarian%' OR
-                publikasi LIKE '%$pencarian%' OR
-                edisi LIKE '%$pencarian%' 
-                ";
-              }else{
-                $query="SELECT * FROM buku WHERE status='available'";
-              }
-              
-                
+      $result=mysqli_query($conn,$query);
+      $namaBuku= array();
+      $idBuku= array();
 
-              $result1= mysqli_query($conn,$query);
-              while($row = mysqli_fetch_assoc($result1)): ?>
-                <td><?= $i; ?></td>
-                <td><?= $row['judul'] ?></td>
-                <td><?= $row['nama'] ?></td>
-                <td><?= $row['publikasi'] ?></td>
-                <td><?= $row['edisi'] ?></td>
-                <td><?= $row['status'] ?></td>
-              <td>
-                <a href="bupdate.php?id=<?=  $row['idBuku']?>" class="nav-link">Update</a>
-                <a href="borrow.php?id=<?=  $row['idBuku']?>" class="nav-link">Pinjam</a>
-                <a href="add.php" class="nav-link">Tambah</a>
 
-              </td>
-              </tr>
-              <?php $i++; ?>
-              <?php endwhile; ?>
+      $query1="SELECT COUNT(idbarang),namaBarang FROM pinjam GROUP BY namaBarang ORDER BY COUNT(idbarang) DESC";
+      
+      while($row= mysqli_fetch_assoc($result)){
+        $namaBuku[]=$row['namaBuku'];
+        $idBuku[]=$row['COUNT(idBuku)'];
+      }
+      $namaBarang=array();
+      $idBarang=array();
 
-            </table>
-          </div>
-        </div>
-
-        </div>
-
+      $result1= mysqli_query($conn,$query1);
+      while($row1=mysqli_fetch_assoc($result1)){
+        $idBarang[]= $row1['COUNT(idbarang)'];
+        $namaBarang[]=$row1['namaBarang'];
+      }
+      
+    } catch(mysqli_sql_exception $e){
+      var_dump($e);
+    }
+    ?>
+<div class="row">
+  <div class="chartBox2"></div>
+  <div class="chartBox">
+    <canvas id="myChart" ></canvas>
+  </div>
+  <div class="chartBox">
+    <canvas id="barangChart"></canvas>
+  </div>
+</div>
        
 <!-- ./wrapper -->
 
@@ -292,7 +264,7 @@ if(!empty($_GET['status'])){
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
@@ -314,5 +286,68 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<script>
+
+  const ctx = document.getElementById('myChart');
+  const ctx2= document.getElementById('barangChart');
+  const namaBuku = <?= json_encode($namaBuku)?>;
+  const idBuku = <?= json_encode($idBuku)?>;
+  const idbarang = <?= json_encode($idBarang)?>;
+  const namaBarang = <?= json_encode($namaBarang)?>;
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: namaBuku,
+    datasets: [{
+      label: 'Jumlah Buku',
+      data: idBuku,
+      borderWidth: 1,
+      borderColor: '#36A2EB',
+      backgroundColor: '#9BD0F5',
+    }]
+    
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        min:0,
+        max:10,
+        ticks:{
+          stepSize:1,
+          autoSkip:false
+        }
+
+      }
+    }
+  }
+});
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: namaBarang,
+    datasets: [{
+      label: 'Jumlah Barang',
+      data: idbarang,
+      borderWidth: 1,
+      borderColor: '#FF6384',
+      backgroundColor: '#FFB1C1',
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        min:0,
+        max:10,
+        ticks:{
+          stepSize:1,
+          autoSkip:false
+        }
+      }
+    }
+  }
+});
+</script>
 </body>
 </html>

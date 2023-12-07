@@ -249,9 +249,6 @@ if(!empty($_GET['status'])){
               <td>
                 <a href="ubarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Update</a>
                 <a href="dbarang.php?id=<?=  $row['idbarang']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
-                <a href="pbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
-                <a href="sbarang.php" class="nav-link">Tambah</a>
-
               </td>
               </tr>
               <?php $i++; ?>

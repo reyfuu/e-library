@@ -1,20 +1,20 @@
+const ctx = document.getElementById('myChart');
 
-$(document).ready(function(){
-   $('#keyword').keyup(function(){
-        let input =$(this).val();
-        console.log(input);
-        if(input != ""){
-         $.ajax({
-            url:"ajax/buku.php",
-            method:"POST",
-            data:{input:input},
-            
-            success:function(data){
-               $('#table').html(data);
-            }
-         })
-        }else{
-         // $('#table').css("display","none");
-        }
-   });
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
 });
