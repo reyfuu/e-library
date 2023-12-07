@@ -2,29 +2,42 @@
 
 include 'connect.php';
 
-if(!empty($_GET['status'])){
-  switch($_GET['status']){
-    case 'succ':
-        $statusType='alert-success';
-        $statysMsg='Data sudah berhasil ditambahkan';
-        break;
-    case 'err':
-        $statusType='alert-danger';
-        $statysMsg='Data gagal ditambahkan';
-        break;
-    case 'invalid':
-        $statusType='alert-danger';
-        $statysMsg='Format salah';
-        break;
-    default:
-      $statusType='';
-      $statysMsg='';
-      break;
-  }
+
+
+$result1= mysqli_query($conn,"SELECT * FROM buku ");
+$rowCount= mysqli_num_rows($result1);
+if($rowCount>0){
+    $rowCount+=1;
+    $idPBuku='BK'. strval($rowCount);
+}else{
+    $idBuku='BK1';
 }
 
 
+if(isset($_POST['submit'])){
+  $judul= $_POST['judul'];
+  $nama=$_POST['nama'];
+  $publikasi=$_POST['publikasi'];
+  $edisi=$_POST['edisi'];
 
+try{
+  mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`,
+  `tanggalKembali`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+
+}catch (mysqli_sql_exception $e){
+  var_dump($e);
+  exit;
+}
+  
+
+  if(mysqli_affected_rows($conn)> 0){
+
+    header("Location: dbook.php");
+  }else{
+    echo "gagal";
+    echo mysqli_error($conn);
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -32,7 +45,7 @@ if(!empty($_GET['status'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Buku</title>
+  <title> Pinjam Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -54,15 +67,6 @@ if(!empty($_GET['status'])){
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-
-  <style>
-    .chartBox{
-      width: 450px;
-    }
-    .chartBox2{
-      width: 100px;
-    }
-  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -79,7 +83,11 @@ if(!empty($_GET['status'])){
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+
+
     </ul>
+
+
   </nav>
   <!-- /.navbar -->
 
@@ -88,7 +96,7 @@ if(!empty($_GET['status'])){
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
+      <span class="brand-text font-weight-light">E-library</span>
     </a>
 
     <!-- Sidebar -->
@@ -100,6 +108,8 @@ if(!empty($_GET['status'])){
           <a href="dashboard.php" class="d-block">Admin</a>
         </div>
       </div>
+
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -138,7 +148,7 @@ if(!empty($_GET['status'])){
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="cbook.php" class="nav-link">
+              <a href="add.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -204,71 +214,65 @@ if(!empty($_GET['status'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0">Dashboard Buku</h1><br>
-           <!-- Search form -->
+            <h1 class="m-0">Dashboard Pinjam Buku</h1>
           </div><!-- /.col -->
+
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <?php 
-    try{
-      $query="SELECT COUNT(idBuku),namaBuku FROM pinjambuku GROUP BY namaBuku ORDER BY COUNT(idBuku) DESC";
+    <!-- /.content-header -->
 
-      $result=mysqli_query($conn,$query);
-      $namaBuku= array();
-      $idBuku= array();
+    <!-- Main content -->
+ 
+      <div class="container ">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="container">
+          <div class="card">
+            <div class="card-body">
+            <form action="abuku.php" method="post">
 
+            <label for="title">Judul</label>
+            <input type="text" name="judul" class="form-control my-3 py-2" required>
+            <label for="title">Nama</label>
+            <input type="text" name="nama" class="form-control my-3 py-2" required>
+            <label for="title">Publikasi</label>
+            <input type="text" name="publikasi" class="form-control my-3 py-2" required>
+            <label for="title">Edisi</label>
+            <input type="text" name="edisi" class="form-control my-3 py-2" required>
+            
+            <div class="text-center">
+            <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
+            </div>
 
-      $query1="SELECT COUNT(idbarang),namaBarang FROM pinjam GROUP BY namaBarang ORDER BY COUNT(idbarang) DESC";
-      
-      while($row= mysqli_fetch_assoc($result)){
-        $namaBuku[]=$row['namaBuku'];
-        $idBuku[]=$row['COUNT(idBuku)'];
-      }
-      $namaBarang=array();
-      $idBarang=array();
+          </form>
+            </div>
+          </div>
+ 
+          </div>
+        </div>
 
-      $result1= mysqli_query($conn,$query1);
-      while($row1=mysqli_fetch_assoc($result1)){
-        $idBarang[]= $row1['COUNT(idbarang)'];
-        $namaBarang[]=$row1['namaBarang'];
-      }
-      
-    } catch(mysqli_sql_exception $e){
-      var_dump($e);
-    }
-    ?>
-<div class="row">
-  <div class="chartBox2"></div>
-  <div class="chartBox">
-    <canvas id="myChart" ></canvas>
-  </div>
-  <div class="chartBox">
-    <canvas id="barangChart"></canvas>
-  </div>
-</div>
        
 <!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
-
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
+
 </script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script src="plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -286,68 +290,5 @@ if(!empty($_GET['status'])){
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<script>
-
-  const ctx = document.getElementById('myChart');
-  const ctx2= document.getElementById('barangChart');
-  const namaBuku = <?= json_encode($namaBuku)?>;
-  const idBuku = <?= json_encode($idBuku)?>;
-  const idbarang = <?= json_encode($idBarang)?>;
-  const namaBarang = <?= json_encode($namaBarang)?>;
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: namaBuku,
-    datasets: [{
-      label: 'Jumlah Buku',
-      data: idBuku,
-      borderWidth: 1,
-      borderColor: '#36A2EB',
-      backgroundColor: '#9BD0F5',
-    }]
-    
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-        min:0,
-        max:10,
-        ticks:{
-          stepSize:1,
-          autoSkip:false
-        }
-
-      }
-    }
-  }
-});
-new Chart(ctx2, {
-  type: 'bar',
-  data: {
-    labels: namaBarang,
-    datasets: [{
-      label: 'Jumlah Barang',
-      data: idbarang,
-      borderWidth: 1,
-      borderColor: '#FF6384',
-      backgroundColor: '#FFB1C1',
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-        min:0,
-        max:10,
-        ticks:{
-          stepSize:1,
-          autoSkip:false
-        }
-      }
-    }
-  }
-});
-</script>
 </body>
 </html>
