@@ -2,27 +2,34 @@
 
 include 'connect.php';
 
+
+
+
 if(isset($_POST['submit'])){
 
     $username=$_POST['username'];
     $password=$_POST['password'];
 
-    $result= mysqli_query($conn, "select* from login where username='$username' and password='$password'");
 
-    $check= mysqli_num_rows($result);
+    try{
+      $result= mysqli_query($conn, "INSERT INTO `login` (`username`,`password`) VALUES('$username','$password')");
+
+    }catch (mysqli_sql_exception $e){
+      var_dump($e);
+      exit;
+    }
+
+
+   
+
+    $check= mysqli_affected_rows($conn);
     if($check> 0){
-      if($username=="admin"){
-        header("Location:dashboard.php");
-      }
-      else{
-        header("Location:dpBuku.php");
-      }
-
-
+     
+        header("Location:index.php");
     }
     else{
         echo "<script>
-            alert('username / password yang anda masukkan salah');
+            alert('data gagal di update');
         </script>";
     }
 
@@ -37,7 +44,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
+  <title>Update Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -52,42 +59,31 @@ if(isset($_POST['submit'])){
 <div class="login-box">
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
-    <div class="card-header text-center">
-      <b>Login E-Library</b>
-    </div>
+
     <div class="card-body">
    
 
-      <form action="index.php" method="post">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="username" name="username">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
+      <form action="signup.php" method="post">
+
+          
+          <label for="title">Username</label>
+          <input type="text" class="form-control"  name="username" >
+          <label for="name">Password</label>
+          <input type="password" class="form-control"  name="password" >
+
+
         </div>
         <div class="row">
 
           <!-- /.col -->
           <div class="container">
-            <button type="submit" class="btn btn-primary btn-block" name="submit">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block" name="submit">Submit</button>
           </div>
-          <br>
-
           <!-- /.col -->
         </div>
       </form>
-  <br>
-      <a href="signup.php">Belum punya akun</a>
+
+
       <!-- /.social-auth-links -->
 
 
