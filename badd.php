@@ -25,19 +25,29 @@ if(isset($_POST['submit'])){
 
 
         $idBarang=$row[0];
-        $namsbarang=$row[1];
+        $namabarang=$row[1];
+        $stok=$row[2];
 
    
 
         $prevQuery="SELECT idbarang FROM barang WHERE idbarang='$idBarang'";
         $prevResult= $conn->query($prevQuery);
 
+        $result1= mysqli_query($conn,"SELECT * FROM barang");
+        if($rowCount>0){
+          $rowCount+=1;
+          $rowCount= mysqli_num_rows($result1);
+        }else{
+          $idBarang='BR1';
+          $idBarang='BR'. strval($rowCount);
+        }
+
         if($prevResult->num_rows>0){
-          $conn->query("UPDATE barang SET namsbarang='$namsbarang',status='available' 
+          $conn->query("UPDATE barang SET namabarang='$namabarang',status='available',stok='$stok' 
           WHERE idbarang='$idBarang' ");
         }else{
-          mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namsbarang`,`status`) 
-          VALUES ('$idBarang','$namsbarang','available')");
+          mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namabarang`,`status`,`stok`) 
+          VALUES ('$idBarang','$namabarang','available','$stok')");
         }
       }
       $qstring='?status=succ';
@@ -131,9 +141,16 @@ if(isset($_POST['submit'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -146,7 +163,7 @@ if(isset($_POST['submit'])){
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -177,7 +194,7 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -209,7 +226,7 @@ if(isset($_POST['submit'])){
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>
@@ -244,7 +261,7 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="sbarang.php" method="post" enctype="multipart/form-data">
+            <form action="badd.php" method="post" enctype="multipart/form-data">
             <label for="title">Import excel file</label>
             <input type="file" name="file" class="form-control " required>
             <div class="text-center">

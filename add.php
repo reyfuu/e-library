@@ -24,20 +24,34 @@ if(isset($_POST['submit'])){
       foreach($worksheet_arr as $row){
 
 
-        $idBuku=$row[0];
-        $judul=$row[1];
-        $nama=$row[2];
-        $publikasi=$row[3];
-        $edisi=$row[4];
+        $judul=$row[0];
+        $nama=$row[1];
+        $publikasi=$row[2];
+        $edisi=$row[3];
+        $stok=$row[4];
 
-        $prevQuery="SELECT idBuku FROM buku WHERE idBuku='$idBuku'";
+   
+
+
+        $result1= mysqli_query($conn,"SELECT * FROM buku");
+        $rowCount= mysqli_num_rows($result1);
+        if($rowCount>0){
+            $rowCount+=1;
+            $idBuku='BK'. strval($rowCount);
+        }else{
+            $idBuku='BK1';
+        }
+
+        
+        $prevQuery="SELECT idBuku FROM barang WHERE idBuku='$idBuku'";
         $prevResult= $conn->query($prevQuery);
 
         if($prevResult->num_rows>0){
-          $conn->query("UPDATE buku SET judul='$judul',nama= '$nama',publikasi='$publikasi',edisi='$edisi' 
+          $conn->query("UPDATE buku SET judul='$judul',nama='$nama',publikasi='$publikasi',edisi='$edisi',stok='$stok' 
           WHERE idBuku='$idBuku' ");
         }else{
-          mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+          mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`nama`,`publikasi`,`edisi`,`status`,`stok`) 
+          VALUES ('$idBuku','$nama','$nama','$publikasi','$edisi','available',$stok)");
         }
       }
       $qstring='?status=succ';
@@ -48,7 +62,7 @@ if(isset($_POST['submit'])){
     $qstring='?status=invalid_file';
   }
 
-  header("Location: dashboard.php".$qstring);
+  header("Location: buku.php".$qstring);
   
 
 }
@@ -59,7 +73,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Add Book</title>
+  <title> Add Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -131,9 +145,16 @@ if(isset($_POST['submit'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -146,7 +167,7 @@ if(isset($_POST['submit'])){
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -177,7 +198,7 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -209,7 +230,7 @@ if(isset($_POST['submit'])){
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>
@@ -228,7 +249,9 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Add Books</h1>
+            <h1 class="m-0">Add Buku</h1>
+            <br>
+            <a href="abuku.php"><button class="btn btn-primary">Tambah</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->

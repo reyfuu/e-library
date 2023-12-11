@@ -186,7 +186,7 @@ try{
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="psbarang.php" method="post">
+            <form action="pbadd.php" method="post">
               <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Nama Barang</label>
             <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required>

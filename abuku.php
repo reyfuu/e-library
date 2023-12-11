@@ -19,10 +19,11 @@ if(isset($_POST['submit'])){
   $nama=$_POST['nama'];
   $publikasi=$_POST['publikasi'];
   $edisi=$_POST['edisi'];
+  $stok=$_POST['stok'];
 
 try{
   mysqli_query($conn,"INSERT INTO `buku` (`idBuku`,`judul`,`nama`,`publikasi`,`edisi`,`status`,
-  `tanggalKembali`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available')");
+  `stok`) VALUES ('$idBuku','$judul','$nama','$publikasi','$edisi','available',$stok)");
 
 }catch (mysqli_sql_exception $e){
   var_dump($e);
@@ -32,7 +33,7 @@ try{
 
   if(mysqli_affected_rows($conn)> 0){
 
-    header("Location: dbook.php");
+    header("Location: buku.php");
   }else{
     echo "gagal";
     echo mysqli_error($conn);
@@ -117,9 +118,16 @@ try{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -132,7 +140,7 @@ try{
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -163,7 +171,7 @@ try{
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -195,7 +203,7 @@ try{
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>
@@ -240,6 +248,8 @@ try{
             <input type="text" name="publikasi" class="form-control my-3 py-2" required>
             <label for="title">Edisi</label>
             <input type="text" name="edisi" class="form-control my-3 py-2" required>
+            <label for="stok">Stok</label>
+            <input type="number" name="stok" class="form-control my-3 py-2" required>
             
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>

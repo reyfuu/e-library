@@ -74,9 +74,16 @@ include 'connect.php';
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -89,7 +96,7 @@ include 'connect.php';
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -120,7 +127,7 @@ include 'connect.php';
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -152,7 +159,7 @@ include 'connect.php';
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>

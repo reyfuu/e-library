@@ -22,23 +22,30 @@ if(isset($_POST['submit'])){
       unset($worksheet_arr[0]);
 
       foreach($worksheet_arr as $row){
-
-
         $noInduk=$row[0];
         $nama=$row[1];
         $kelas=$row[2];
 
    
 
-        $prevQuery="SELECT noInduk FROM siswa WHERE noInduk='$noInduk'";
+        $result1= mysqli_query($conn,"SELECT * FROM buku");
+        $rowCount= mysqli_num_rows($result1);
+        if($rowCount>0){
+            $rowCount+=1;
+            $idSiswa='BK'. strval($rowCount);
+        }else{
+            $idSiswa='BK1';
+        }
+
+        $prevQuery="SELECT idSiswa FROM siswa WHERE idSiswa='$idSiswa'";
         $prevResult= $conn->query($prevQuery);
 
         if($prevResult->num_rows>0){
-          $conn->query("UPDATE siswa SET nama='$nama',kelas= '$kelas' 
-          WHERE noInduk='$noInduk' ");
+          $conn->query("UPDATE siswa SET noInduk='$noInduk',nama='$nama',kelas='$kelas' 
+          WHERE idSiswa='$idSiswa' ");
         }else{
-          mysqli_query($conn,"INSERT INTO `siswa` (`noInduk`,`nama`,`kelas`) 
-          VALUES ('$noInduk','$nama','$kelas')");
+          mysqli_query($conn,"INSERT INTO `siswa` (`idSiswa`,`noInduk`,`nama`,`kelas`) 
+          VALUES ('$idSiswa','$noInduk','$nama','$kelas')");
         }
       }
       $qstring='?status=succ';
@@ -132,9 +139,16 @@ if(isset($_POST['submit'])){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -147,7 +161,7 @@ if(isset($_POST['submit'])){
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -178,7 +192,7 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -210,7 +224,7 @@ if(isset($_POST['submit'])){
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>

@@ -19,8 +19,8 @@ if(isset($_POST['submit'])){
   $stok=$_POST['stok'];
 
 try{
-  mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namabarang`,`stok`,`status`) 
-  VALUES ('$idBarang','$namabarang','stok','available')");
+  mysqli_query($conn,"INSERT INTO `barang` (`idbarang`,`namabarang`,`status`,`stok`) 
+  VALUES ('$idBarang','$namabarang','available','stok')");
 
 }catch (mysqli_sql_exception $e){
   var_dump($e);
@@ -115,9 +115,16 @@ try{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
@@ -130,7 +137,7 @@ try{
               </a>
             </li>
             <li class="nav-item">
-              <a href="dashboard.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
@@ -161,7 +168,7 @@ try{
             </a>
           </li>
           <li class="nav-item">
-           <a href="sbarang.php" class="nav-link">
+           <a href="badd.php" class="nav-link">
               <p>
                Barang
               </p>
@@ -193,7 +200,7 @@ try{
           </li>
           </ul>
           <li class="nav-item">
-           <a href="report.php" class="nav-link">
+           <a href="report.php" class="nav-link active">
               <p>
                Report
               </p>
