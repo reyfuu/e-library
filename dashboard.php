@@ -135,6 +135,13 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -220,27 +227,22 @@ if(!empty($_GET['status'])){
     </div>
     <?php 
     try{
-      $query="SELECT COUNT(idBuku),namaBuku FROM pinjambuku GROUP BY namaBuku ORDER BY COUNT(idBuku) DESC";
-
+      $query="SELECT idPinjam FROM pinjambuku ";
       $result=mysqli_query($conn,$query);
-      $namaBuku= array();
-      $idBuku= array();
+      $jumlahPinjamBuku=mysqli_num_rows($result);
 
-
-      $query1="SELECT COUNT(idbarang),namaBarang FROM pinjam GROUP BY namaBarang ORDER BY COUNT(idbarang) DESC";
-      
-      while($row= mysqli_fetch_assoc($result)){
-        $namaBuku[]=$row['namaBuku'];
-        $idBuku[]=$row['COUNT(idBuku)'];
-      }
-      $namaBarang=array();
-      $idBarang=array();
-
+      $query1="SELECT idpinjam FROM pinjam ";
       $result1= mysqli_query($conn,$query1);
-      while($row1=mysqli_fetch_assoc($result1)){
-        $idBarang[]= $row1['COUNT(idbarang)'];
-        $namaBarang[]=$row1['namaBarang'];
-      }
+      $jumlahPinjamBarang=mysqli_num_rows($result1);
+
+      $query2="SELECT idBuku FROM buku";
+      $result2=mysqli_query($conn,$query2);
+      $jumlahBuku=mysqli_num_rows($result2);
+
+      $query3="SELECT idbarang FROM barang";
+      $result3=mysqli_query($conn,$query3);
+      $jumlahBarang=mysqli_num_rows($result3);
+
       
     } catch(mysqli_sql_exception $e){
       var_dump($e);
@@ -297,63 +299,40 @@ if(!empty($_GET['status'])){
 
   const ctx = document.getElementById('myChart');
   const ctx2= document.getElementById('barangChart');
-  const namaBuku = <?= json_encode($namaBuku)?>;
-  const idBuku = <?= json_encode($idBuku)?>;
-  const idbarang = <?= json_encode($idBarang)?>;
-  const namaBarang = <?= json_encode($namaBarang)?>;
+
+  const jumlahPinjamBuku = <?= json_encode($jumlahPinjamBuku)?>;
+  const jumlahPinjamBarang = <?= json_encode($jumlahPinjamBarang)?>;
+  const jumlahBuku = <?= json_encode($jumlahBuku) ?>;
+  const jumlahBarang = <?= json_encode($jumlahBarang) ?>;
+
 new Chart(ctx, {
-  type: 'bar',
+  type: 'pie',
   data: {
-    labels: namaBuku,
+    labels: ['jumlah pinjam buku','Jumlah Buku'],
     datasets: [{
-      label: 'Jumlah Buku',
-      data: idBuku,
-      borderWidth: 1,
-      borderColor: '#36A2EB',
-      backgroundColor: '#9BD0F5',
+      label: ['Jumlah Buku di Pinjam','Jumlah Buku'],
+      data: [jumlahPinjamBuku, jumlahBuku],
+      borderColor: ['#FF6384','#33FFFF','#FF3C33'],
+      backgroundColor: ['#FFB1C1','#333CFF','#FBF9F9'],
+ 
+
     }]
     
   },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-        min:0,
-        max:10,
-        ticks:{
-          stepSize:1,
-          autoSkip:false
-        }
 
-      }
-    }
-  }
 });
 new Chart(ctx2, {
-  type: 'bar',
+  type: 'pie',
   data: {
-    labels: namaBarang,
+    labels: ['Jumlah barang pinjam','Jumlah barang'],
     datasets: [{
-      label: 'Jumlah Barang',
-      data: idbarang,
-      borderWidth: 1,
-      borderColor: '#FF6384',
-      backgroundColor: '#FFB1C1',
+      label: ['Jumlah barang pinjam','Jumlah Barang'],
+      data: [jumlahPinjamBarang,jumlahBarang],
+      borderColor: ['#FF6384','#33FFFF','#FF3C33'],
+      backgroundColor: ['#FFB1C1','#333CFF','#FBF9F9'],
     }]
   },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-        min:0,
-        max:10,
-        ticks:{
-          stepSize:1,
-          autoSkip:false
-        }
-      }
-    }
-  }
+
 });
 </script>
 </body>

@@ -23,10 +23,6 @@ if(!empty($_GET['status'])){
   }
 }
 
-  
-
-  $result1= mysqli_query($conn,"SELECT * FROM siswa ");
-
 
 ?>
 <!DOCTYPE html>
@@ -128,6 +124,13 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -207,10 +210,10 @@ if(!empty($_GET['status'])){
 
             <h1 class="m-0">Dashboard</h1><br>
            <!-- Search form -->
-            <div class="input-group">
-              <form action=""  class="d-flex">
+           <div class="input-group">
+              <form action="student.php"  class="d-flex" method="get">
                 <div class="form-outline" data-mdb-input-init>
-                  <input type="text" class="form-control me 2" id="keyword"/>
+                <input type="text" name="cari" class="form-control me 2" id="cari" value="<?php if(isset($_GET['cari'])){echo $_GET['cari'];}  ?>" />
                 </div>
                 <button type="submit" class="btn btn-primary" data-mdb-ripple-init id="tombol-cari">
                   <i class="fas fa-search"></i>
@@ -242,14 +245,25 @@ if(!empty($_GET['status'])){
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php while($row = mysqli_fetch_assoc($result1)): ?>
+              <?php 
+                 if(isset($_GET['cari'])){
+                  $pencarian= $_GET['cari'];
+                  $query="SELECT * FROM siswa WHERE
+                  noInduk LIKE '%$pencarian%' OR
+                  nama LIKE '%$pencarian%' OR
+                  kelas LIKE '%$pencarian%'  ";
+                }else{  
+                  $query= "SELECT * FROM siswa";
+                }
+                $result=mysqli_query($conn,$query);
+              while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['noInduk'] ?></td>
                 <td><?= $row['nama'] ?></td>
                 <td><?= $row['kelas'] ?></td>
               <td>
-                <a href="ustudent.php?id=<?=  $row['noInduk']?>" class="nav-link">Update</a>
-                <a href="dstudent.php?id=<?=  $row['noInduk']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
+                <a href="ustudent.php?id=<?=  $row['idSiswa']?>" class="nav-link">Update</a>
+                <a href="dstudent.php?id=<?=  $row['idSiswa']?>" onclick="return confirm('Yakin mau hapus data ini?')" class="nav-link">Delete</a>
 
               </td>
               </tr>

@@ -169,6 +169,13 @@ if(isset($_POST['submit'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -245,7 +252,9 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Add Books</h1>
+            <h1 class="m-0">Add Barang</h1>
+            <br>
+            <a href="abarang.php"><button class="btn btn-primary">Tambah</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->

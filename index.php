@@ -53,7 +53,7 @@ if(isset($_POST['submit'])){
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <b>Login E-Library</b>
+      <b>Login Sistem Peminjaman</b>
     </div>
     <div class="card-body">
    

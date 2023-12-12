@@ -173,6 +173,13 @@ if(isset($_POST['submit'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">

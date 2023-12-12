@@ -4,17 +4,17 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
-$result= mysqli_query($conn,"SELECT * FROM `siswa` WHERE noInduk='$id'");
+$result= mysqli_query($conn,"SELECT * FROM `siswa` WHERE idSiswa='$id'");
 
 
 if(isset($_POST['submit'])){
 
-    $noInduk=$_POST['noInduk'];
+    $idSiswa=$_POST['idSiswa'];
     $nama=$_POST['nama'];
     $kelas=$_POST['kelas'];
 
     try{
-      $result= mysqli_query($conn, "UPDATE siswa SET nama='$nama',kelas='$kelas' WHERE noInduk='$noInduk'");
+      $result= mysqli_query($conn, "UPDATE siswa SET nama='$nama',kelas='$kelas' WHERE idSiswa='$idSiswa'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -66,11 +66,12 @@ if(isset($_POST['submit'])){
    
 
       <form action="ustudent.php" method="post">
-      <input type="hidden" name="noInduk" value="<?= $id ?>">
+      <input type="hidden" name="idSiswa" value="<?= $id ?>">
         <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="publication">Kelas</label>
+          <label for="publication">Nama</label>
           <input type="text" class="form-control" name="nama" value="<?= $row['nama'] ?>">
+          <label for="">Kelas</label>
           <input type="text" class="form-control"  name="kelas" value="<?= $row['kelas']; ?>">
 
           <?php endwhile; ?>

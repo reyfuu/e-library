@@ -243,7 +243,9 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Add Books</h1>
+            <h1 class="m-0">Add Siswa</h1>
+            <br>
+            <a href="asiswa.php"><button class="btn btn-primary">Siswa</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->

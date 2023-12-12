@@ -110,7 +110,6 @@ try{
 
 
 
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
@@ -141,6 +140,13 @@ try{
               <a href="buku.php" class="nav-link">
                 <p>
                   Buku
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
                 </p>
               </a>
             </li>
