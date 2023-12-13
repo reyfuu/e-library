@@ -5,9 +5,12 @@ include 'connect.php';
 
 
     $pencarian=$_GET['keyword'];
+    $tanggalPinjam=$_GET['tanggalPinjam'];
+    $tanggalKembali=$_GET['tanggalKembali'];
     $query="SELECT * FROM pinjamBuku  
     WHERE 
 
+    tanggalKembali BETWEEN $tanggalPinjam and $tanggalKembali AND
     noInduk='$pencarian' OR
     idBuku ='$pencarian' OR
     namaBuku ='$pencarian' OR

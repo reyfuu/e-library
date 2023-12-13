@@ -237,6 +237,7 @@ if(!empty($_GET['status'])){
               <tr>
                 <td>No</td>
                 <td>Nama Barang</td>
+                <td>Stok</td>
                 <td>Status</td>
                 <td>Aksi</td>
               </tr>
@@ -258,6 +259,7 @@ if(!empty($_GET['status'])){
               while($row = mysqli_fetch_assoc($result)): ?>
                 <td><?= $i; ?></td>
                 <td><?= $row['namabarang'] ?></td>
+                <td><?= $row['stok'] ?></td>
                 <td><?= $row['status'] ?></td>
 
               <td>

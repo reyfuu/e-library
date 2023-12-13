@@ -6,9 +6,11 @@ include 'connect.php';
 if(isset($_POST['submit'])){
   $keyword=$_POST['keyword'];
   $report=$_POST['report'];
+  $tanggalPinjam=$_POST['tanggalPinjam'];
+  $tanggalKembali=$_POST['tanggalKembali'];
 
   if($report == 'Buku'){
-    header("Location:pdfBuku.php?keyword=$keyword");
+    header("Location:pdfBuku.php?keyword=$keyword&tanggalPinjam=$tanggalPinjam&tanggalKembali=$tanggalKembali");
   }
   elseif($report == 'Barang'){
     header("Location:pdfBarang.php?keyword=$keyword");
@@ -226,6 +228,10 @@ if(isset($_POST['submit'])){
               <option value="Barang">Barang</option>
               <option value="semua">Buku & Barang</option>
             </select>
+            <label for="">Dari Tanggal</label>
+            <input type="date" name="tanggalPinjam" class="form-control" required>
+            <label for="">Sampai Tanggal</label>
+            <input type="date" name="tanggalKembali" class="form-control" required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>

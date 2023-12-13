@@ -236,8 +236,8 @@ if(!empty($_GET['status'])){
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table" >
               <tr>
                 <td>No</td>
-                <td>judul</td>
-                <td>nama</td>
+                <td>Judul Buku</td>
+                <td>Nama Penulis</td>
                 <td>Publikasi</td>
                 <td>Edisi</td>
                 <td>Stok</td>

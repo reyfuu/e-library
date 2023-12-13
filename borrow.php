@@ -17,25 +17,35 @@ if(isset($_POST['submit'])){
   $tanggalKembali= strtotime($date);
   $tanggalKembali= strtotime("+7 day", $tanggalKembali);
   $tanggalKembali= date('Y/m/d', $tanggalKembali);
+  $stok=1;
 
 
   $idbookTemp= null;
   $noIndukTemp= null;
   
-  $idbuku= mysqli_query($conn,"SELECT idBuku FROM buku WHERE judul='$judul'");
-  $noInduk= mysqli_query($conn,"SELECT noInduk FROM siswa WHERE nama='$nama'");
+  $idbuku= mysqli_query($conn,"SELECT idBuku,stok FROM buku WHERE judul='$judul'");
+  $idSiswa= mysqli_query($conn,"SELECT idSiswa,noInduk FROM siswa WHERE nama='$nama'");
 
 
   while($row= mysqli_fetch_array($idbuku)){
     $idbookTemp=$row['idBuku'];
+    $stokTemp=$row['stok'];
   }
   var_dump($idbookTemp);
   while($row1=mysqli_fetch_array($noInduk)){
+    $idSiswaTemp=$row1['idSiswa'];
     $noIndukTemp=$row1['noInduk'];
   }
 try{
-  mysqli_query($conn,"INSERT INTO `pinjambuku` (`idPinjam`,`idBuku`,`noInduk`,`namaSiswa`,`namaBuku`,`tanggalPinjam`,
-  `tanggalKembali`) VALUES ('$idPinjam','$idbookTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali')");
+  $stokTemp-= intval($stok);
+  if($stok >0){
+    $status='available';
+  }else{
+    $status='unavailable';
+  }
+  mysqli_query($conn,"INSERT INTO `pinjambuku` (`idPinjam`,`idBuku`,`idSiswa`,`noInduk`,`namaSiswa`,`namaBuku`,`tanggalPinjam`,
+  `tanggalKembali`,`status`)
+   VALUES ('$idPinjam','$idbookTemp','$idSiswaTemp','$noIndukTemp','$nama','$judul','$date','$tanggalKembali','pinjam')");
 
 }catch (mysqli_sql_exception $e){
   var_dump($e);
@@ -44,7 +54,7 @@ try{
   
 
   if(mysqli_affected_rows($conn)> 0){
-    mysqli_query($conn, "UPDATE buku SET  status='unavailable'  WHERE idBuku='$idbookTemp'");
+    mysqli_query($conn, "UPDATE buku SET  status='$status', stok='$stokTemp'  WHERE idBuku='$idbookTemp'");
     header("Location: dashboard.php");
   }else{
     echo "gagal";

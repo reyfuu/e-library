@@ -1,6 +1,7 @@
 <?php
 
 include 'connect.php';
+session_start();
 
 if(isset($_POST['submit'])){
 
@@ -15,6 +16,7 @@ if(isset($_POST['submit'])){
         header("Location:dashboard.php");
       }
       else{
+        $_SESSION['siswa']=$username;
         header("Location:dpBuku.php");
       }
 

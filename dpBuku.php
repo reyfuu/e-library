@@ -1,7 +1,7 @@
 <?php 
 
 include 'connect.php';
-
+session_start();
 
 
 ?>
@@ -66,7 +66,7 @@ include 'connect.php';
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
+          <a href="dpBuku.php" class="d-block"><?= $_SESSION['siswa']; ?></a>
         </div>
       </div>
 
@@ -146,7 +146,6 @@ include 'connect.php';
                 <td>Nama Pengarang</td>
                 <td>Publikasi</td>
                 <td>Edisi</td>
-                <td>status</td>
                 <td>Aksi</td>
               </tr>
               <tr>

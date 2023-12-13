@@ -1,7 +1,7 @@
 <?php 
 
 include 'connect.php';
-
+session_start();
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +65,7 @@ include 'connect.php';
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
+          <a href="dpBuku.php" class="d-block"><?= $_SESSION['siswa']; ?></a>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ include 'connect.php';
                 <td><?= $row['namabarang'] ?></td>
 
               <td>
-                <a href="pbadd.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
+                <a href="psbarang.php?id=<?=  $row['idbarang']?>" class="nav-link">Pinjam</a>
               </td>
               </tr>
               <?php $i++; ?>

@@ -1,6 +1,7 @@
 <?php 
 
 include 'connect.php';
+session_start();
 
 $id=$_GET['id'];
 
@@ -18,26 +19,35 @@ if(isset($_POST['submit'])){
   $tanggalKembali= strtotime($date);
   $tanggalKembali= strtotime("+7 day", $tanggalKembali);
   $tanggalKembali= date('Y/m/d', $tanggalKembali);
-
+  $stok=1;
 
   $idbarangTemp= null;
   $noIndukTemp= null;
   
-  $idBarang= mysqli_query($conn,"SELECT idbarang FROM barang WHERE namabarang='$namaBarang'");
-  $noInduk= mysqli_query($conn,"SELECT noInduk FROM siswa WHERE nama='$nama'");
+  $idBarang= mysqli_query($conn,"SELECT idbarang,stok FROM barang WHERE namabarang='$namaBarang'");
+  $noInduk= mysqli_query($conn,"SELECT idSiswa,noInduk FROM siswa WHERE nama='$nama'");
 
 
   while($row= mysqli_fetch_array($idBarang)){
     $idbarangTemp=$row['idbarang'];
+    $stokTemp=$row['stok'];
   }
   var_dump($idbarangTemp);
   while($row1=mysqli_fetch_array($noInduk)){
     $noIndukTemp=$row1['noInduk'];
+    $idSiswaTemp=$row1['idSiswa'];
+  }
+  $stokTemp-= intval($stok);
+  if($stokTemp >0){
+    $status='available';
+  }else{
+    $status='unavailable';
   }
 try{
-  mysqli_query($conn,"INSERT INTO `pinjam` (`idpinjam`,`noInduk`,`idbarang`,`namaBarang`,`namaSiswa`,`tanggalPinjam`,
-  `tanggalKembali`) VALUES ('$idPinjam','$noIndukTemp','$idbarangTemp','$namaBarang','$nama','$date','$tanggalKembali')");
-  
+  mysqli_query($conn,"INSERT INTO `pinjam` (`idpinjam`,`idSiswa`,`noInduk`,`idbarang`,`namaBarang`,`namaSiswa`,`tanggalPinjam`,
+  `tanggalKembali`,`status`) 
+  VALUES ('$idPinjam','$idSiswaTemp','$noIndukTemp','$idbarangTemp','$namaBarang','$nama','$date','$tanggalKembali','pinjam')");
+   
 }catch (mysqli_sql_exception $e){
   var_dump($e);
   exit;
@@ -45,7 +55,7 @@ try{
   
 
   if(mysqli_affected_rows($conn)> 0){
-    mysqli_query($conn, "UPDATE barang SET  status='unavailable'  WHERE idbarang='$idbarangTemp'");
+    mysqli_query($conn, "UPDATE barang SET  status='$status',stok='$stokTemp'  WHERE idbarang='$idbarangTemp'");
     header("Location: dpBarang.php");
   }else{
     echo "gagal";
@@ -110,7 +120,7 @@ try{
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-library</span>
+      <span class="brand-text font-weight-light">Sistem Peminjaman</span>
     </a>
 
     <!-- Sidebar -->
@@ -119,7 +129,7 @@ try{
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
         <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
+          <a href="dpBuku.php" class="d-block"><?= $_SESSION['siswa']; ?></a>
         </div>
       </div>
 
@@ -186,7 +196,7 @@ try{
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="pbadd.php" method="post">
+            <form action="psbarang.php" method="post">
               <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Nama Barang</label>
             <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required>
