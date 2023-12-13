@@ -220,6 +220,7 @@ if(!empty($_GET['status'])){
           <div class="col-sm-6">
 
             <h1 class="m-0">Dashboard Buku</h1><br>
+
            <!-- Search form -->
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -227,11 +228,11 @@ if(!empty($_GET['status'])){
     </div>
     <?php 
     try{
-      $query="SELECT idPinjam FROM pinjambuku ";
+      $query="SELECT idPinjam FROM pinjambuku WHERE status='pinjam'";
       $result=mysqli_query($conn,$query);
       $jumlahPinjamBuku=mysqli_num_rows($result);
 
-      $query1="SELECT idpinjam FROM pinjam ";
+      $query1="SELECT idpinjam FROM pinjam WHERE status='pinjam' ";
       $result1= mysqli_query($conn,$query1);
       $jumlahPinjamBarang=mysqli_num_rows($result1);
 
@@ -334,6 +335,8 @@ new Chart(ctx2, {
   },
 
 });
+
+
 </script>
 </body>
 </html>

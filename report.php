@@ -3,6 +3,21 @@
 include 'connect.php';
 
 
+if(isset($_POST['submit'])){
+  $keyword=$_POST['keyword'];
+  $report=$_POST['report'];
+
+  if($report == 'Buku'){
+    header("Location:pdfBuku.php?keyword=$keyword");
+  }
+  elseif($report == 'Barang'){
+    header("Location:pdfBarang.php?keyword=$keyword");
+  }
+  else{
+    header("Location:pdf.php?keyword=$keyword");
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -202,9 +217,15 @@ include 'connect.php';
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="pdf.php" method="post" enctype="multipart/form-data">
+            <form action="report.php" method="post" enctype="multipart/form-data">
             <label for="title">Masukkan No Induk / nama Siswa</label>
             <input type="text" name="keyword" class="form-control " required>
+            <label for="">Report</label>
+            <select name="report" class="form-control">
+              <option value="Buku">Buku</option>
+              <option value="Barang">Barang</option>
+              <option value="semua">Buku & Barang</option>
+            </select>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>

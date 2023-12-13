@@ -5,17 +5,14 @@ include 'connect.php';
 
 
     $pencarian=$_GET['keyword'];
-    $query="SELECT * FROM pinjam pj, pinjambuku pjbk 
+    $query="SELECT * FROM pinjam  
     WHERE 
 
-    pj.noInduk='$pencarian' AND
-    pjbk.noInduk= '$pencarian' OR
-    pj.idbarang ='$pencarian' OR
-    pj.namaBarang ='$pencarian' OR
-    pj.namaSiswa ='$pencarian' AND
-    pjbk.namaSiswa='$pencarian' OR
-    pjbk.idBuku = '$pencarian' OR
-    pjbk.namaBuku= '$pencarian' 
+    noInduk='$pencarian' OR
+    idbarang ='$pencarian' OR
+    namaBarang ='$pencarian' OR
+    namaSiswa ='$pencarian' 
+
     ";
     $query2="SELECT * FROM siswa
         WHERE 
@@ -44,10 +41,9 @@ include 'connect.php';
           >
         <tr>
           <th>No</th>
-          <th>Id Pinjam Buku dan Barang</th>
-          <th>Id barang dan Buku</th>
+          <th>Id Pinjam Barang</th>
+          <th>Id barang</th>
           <th>Nama Barang</th>
-          <th>Nama Buku</th>
           <th>No Induk</th>
           <th>Nama Siswa</th>
           <th>Tanggal Pinjam dan Kembali Barang</th>
@@ -59,10 +55,9 @@ include 'connect.php';
         $html.='
         <tr>
         <td>'.$count++.'</td>
-        <td>'.$row['idPinjam'].'&' .$row['idpinjam']. '</td>
-                 <td>'.$row['idbarang'].'&' .$row['idBuku']. '</td>
+                 <td>'.$row['idpinjam']. '</td>
+                 <td>'.$row['idbarang'].'</td>
                  <td>'. $row['namaBarang'].'</td>
-                 <td>'. $row['namaBuku'].'</td>
                  <td>'.$row['noInduk'].'</td>
                  <td>'. $row['namaSiswa'].'</td>
                  <td>'. $row['tanggalpinjam'].'&' .$row['tanggalPinjam'].'</td>

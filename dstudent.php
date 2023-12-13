@@ -3,7 +3,7 @@
 include 'connect.php';
 
 $id=$_GET['id'];
-$result= mysqli_query($conn,"DELETE FROM siswa WHERE noInduk='$id'");
+$result= mysqli_query($conn,"DELETE FROM siswa WHERE idSiswa='$id'");
 $check= mysqli_affected_rows($conn);
 if($check > 0){
     
