@@ -142,6 +142,13 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="login.php" class="nav-link">
+                <p>
+                  login
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -219,7 +226,7 @@ if(!empty($_GET['status'])){
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard Buku</h1><br>
+            <h1 class="m-0">Dashboard </h1><br>
 
            <!-- Search form -->
           </div><!-- /.col -->

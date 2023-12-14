@@ -14,12 +14,12 @@ $rowCount+=1;
 
 if(isset($_POST['submit'])){
   $namaBarang=$_POST['namaBarang'];
-  $nama=$_POST['nama'];
+  $nama=$_SESSION['siswa'];
   $date=$_POST['date'];
   $tanggalKembali= strtotime($date);
   $tanggalKembali= strtotime("+7 day", $tanggalKembali);
   $tanggalKembali= date('Y/m/d', $tanggalKembali);
-  $stok=1;
+  $stok=$_POST['stok'];
 
   $idbarangTemp= null;
   $noIndukTemp= null;
@@ -199,9 +199,9 @@ try{
             <form action="psbarang.php" method="post">
               <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Nama Barang</label>
-            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required>
-            <label for="title">Nama Siswa</label>
-            <input type="text" name="nama" class="form-control my-3 py-2" required>
+            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required disabled>
+            <label for="">Stok</label>
+            <input type="number" name="stok" class="form-control my-3 py-2" required>
             <label for="title">Tanggal</label>
             <input type="date" name="date" class="form-control my-3 py-2" required>
             <div class="text-center">

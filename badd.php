@@ -34,12 +34,12 @@ if(isset($_POST['submit'])){
         $prevResult= $conn->query($prevQuery);
 
         $result1= mysqli_query($conn,"SELECT * FROM barang");
+        $rowCount=mysqli_num_rows($result1);
         if($rowCount>0){
           $rowCount+=1;
-          $rowCount= mysqli_num_rows($result1);
+          $rowCount= 'BK'. strval($rowCount);
         }else{
           $idBarang='BR1';
-          $idBarang='BR'. strval($rowCount);
         }
 
         if($prevResult->num_rows>0){

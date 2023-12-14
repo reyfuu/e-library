@@ -8,14 +8,17 @@ if(isset($_POST['submit'])){
 
     $idPinjam=$_POST['idPinjam'];
     $date=$_POST['date'];
+    $status= $_POST['status'];
+    $stok=$_POST['stok'];
 
-    $result1=mysqli_query($conn,"SELECT idbarang FROM pinjam WHERE idpinjam='$idPinjam' ");
+    $result1=mysqli_query($conn,"SELECT idbarang,stok FROM pinjam WHERE idpinjam='$idPinjam' ");
 
     while($row1=mysqli_fetch_assoc($result1)){
       $idbarangTemp=$row1['idbarang'];
+      $stokTemp=$row1['stok'];
     }
     try{
-      $result= mysqli_query($conn, "UPDATE pinjam SET tanggalkembali='$date'  WHERE idpinjam='$idPinjam'");
+      $result= mysqli_query($conn, "UPDATE pinjam SET tanggalkembali='$date',status='$status'  WHERE idpinjam='$idPinjam'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
@@ -23,11 +26,11 @@ if(isset($_POST['submit'])){
     }
 
 
-   
+   $stok= intval($stok)+ intval($stokTemp);
 
     $check= mysqli_affected_rows($conn);
     if($check> 0){
-        mysqli_query($conn, "UPDATE barang SET status='available'  WHERE idbarang='$idbarangTemp'");
+        mysqli_query($conn, "UPDATE barang SET status='available',stok='$stok'  WHERE idbarang='$idbarangTemp'");
         header("Location:dpaBarang.php");
     }
     else{
@@ -71,8 +74,11 @@ if(isset($_POST['submit'])){
        
           
           <label for="title">Tanggal Kembali</label>
-          <input type="date" class="form-control"  name="date" >
-
+          <input type="date" class="form-control"  name="date" required>
+          <label for="">Stok</label>
+          <input type="text" name="stok" class="form-control" required>
+          <label for="">Status</label>
+          <input type="text" name="status" class="form-control" required>
         </div>
         <div class="row">
 

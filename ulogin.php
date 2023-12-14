@@ -4,34 +4,30 @@ include 'connect.php';
 
 $id=$_GET['id'];
 
+$result= mysqli_query($conn,"SELECT * FROM `login` WHERE username='$id'");
+
+
 if(isset($_POST['submit'])){
 
-    $idPinjam=$_POST['idPinjam'];
-    $date=$_POST['date'];
-    $status= $_POST['status'];
-    $stok=1;
+    $username=$_POST['username'];
+    $password=$_POST['password'];
 
-    $result1=mysqli_query($conn,"SELECT idBuku,stok FROM pinjamBuku WHERE idPinjam='$idPinjam' ");
 
-    while($row1=mysqli_fetch_assoc($result1)){
-      $idBukuTemp=$row1['idBuku'];
-      $stokTemp=$row1['stok'];
-    }
     try{
-      $result= mysqli_query($conn, "UPDATE pinjambuku SET tanggalKembali='$date',status='$status'  WHERE idpinjam='$idPinjam'");
+      $result= mysqli_query($conn, "UPDATE login SET username='$username', password='$password' WHERE username='$username'");
 
     }catch (mysqli_sql_exception $e){
       var_dump($e);
       exit;
     }
 
-    $stok+=intval($stokTemp);
+
    
 
     $check= mysqli_affected_rows($conn);
     if($check> 0){
-        mysqli_query($conn, "UPDATE buku SET status='available',stok='$stok'  WHERE idBuku='$idBukuTemp'");
-        header("Location:dpaBuku.php");
+     
+        header("Location:login.php");
     }
     else{
         echo "<script>
@@ -50,7 +46,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Update Buku</title>
+  <title>Update Login</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -69,15 +65,14 @@ if(isset($_POST['submit'])){
     <div class="card-body">
    
 
-      <form action="dpuBuku.php" method="post">
-      <input type="hidden" name="idPinjam" value="<?= $id ?>">
-       
+      <form action="ulogin.php" method="post">
+        <?php while($row= mysqli_fetch_assoc($result)):  ?>
           
-          <label for="title">Tanggal Kembali</label>
-          <input type="date" class="form-control"  name="date" required>
-          <label for="">Status</label>
-          <input type="text" class="from-control" name="status" required>
-
+          <label for="title">Username</label>
+          <input type="text" class="form-control"  name="username" value="<?= $row["username"];?>">
+          <label for="name">password</label>
+          <input type="password" class="form-control"  name="password" value="<?= $row['password']; ?>">
+          <?php endwhile; ?>
         </div>
         <div class="row">
 

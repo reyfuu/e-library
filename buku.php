@@ -55,9 +55,9 @@ if(!empty($_GET['status'])){
 <div class="wrapper">
 
   <!-- Preloader --> 
-  <div class="preloader flex-column justify-content-center align-items-center">
+  <!-- <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
+  </div> -->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -246,8 +246,16 @@ if(!empty($_GET['status'])){
               <tr>
               <?php $i=1; ?>
               <?php
+               $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
+               $jumlahData=mysqli_num_rows($result1);
+               $jumlahDataPerHalaman=10;
+               $jumlahHalaman= ceil( $jumlahData/$jumlahDataPerHalaman);
+               $halamanAktif= (isset($_GET['halaman']) ? $_GET['halaman']: 1);
+               $awalData= ($jumlahDataPerHalaman * $halamanAktif)-$jumlahDataPerHalaman;
               if(isset($_GET['cari'])){
                 $pencarian=$_GET['cari'];
+                
+
                 $query="SELECT * FROM buku 
                 WHERE 
                 idBuku LIKE '%$pencarian%' OR
@@ -256,7 +264,7 @@ if(!empty($_GET['status'])){
                 edisi LIKE '%$pencarian%' OR
                 status LIKE '%$pencarian%'";
               }else{
-                $query= "SELECT * FROM buku WHERE status='available'";
+                $query= "SELECT * FROM buku WHERE status='available' LIMIT $awalData,$jumlahDataPerHalaman";
               }
 
               $result=mysqli_query($conn,$query);
@@ -278,8 +286,21 @@ if(!empty($_GET['status'])){
             </table>
           </div>
         </div>
-
-
+        <div class="text-center">
+          <?php if($halamanAktif>1):?>
+            <a href="?halaman=<?= $halamanAktif-1?>">&laquo;</a>
+          <?php endif ?>
+           <?php for($i=1;$i<=$jumlahHalaman;$i++):?>
+               <?php if($i == $halamanAktif):?>
+              <a href="?halaman=<?= $i?>" style="font-weight:bold; color:red; text-decoration:none"><?= $i ?></a>
+              <?php else:?>
+                <a href="?halaman=<?= $i?>" ><?= $i ?></a>
+              <?php endif;?>
+            <?php endfor?>
+          <?php if($halamanAktif<1):?>
+            <a href="?halaman=<?= $halamanAktif+1?>">&raquo;</a>
+          <?php endif ?>
+        </div>
         <br>
         <!-- Small boxes (Stat box) -->
          

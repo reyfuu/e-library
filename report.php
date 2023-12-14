@@ -204,6 +204,7 @@ if(isset($_POST['submit'])){
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Dashboard Report</h1>
+            <a href="pdf2.php"><button class="btn btn-primary">Download</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
