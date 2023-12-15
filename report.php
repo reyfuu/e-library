@@ -1,32 +1,10 @@
-<?php 
 
-include 'connect.php';
-
-
-if(isset($_POST['submit'])){
-  $keyword=$_POST['keyword'];
-  $report=$_POST['report'];
-  $tanggalPinjam=$_POST['tanggalPinjam'];
-  $tanggalKembali=$_POST['tanggalKembali'];
-
-  if($report == 'Buku'){
-    header("Location:pdfBuku.php?keyword=$keyword&tanggalPinjam=$tanggalPinjam&tanggalKembali=$tanggalKembali");
-  }
-  elseif($report == 'Barang'){
-    header("Location:pdfBarang.php?keyword=$keyword");
-  }
-  else{
-    header("Location:pdf.php?keyword=$keyword");
-  }
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Report</title>
+  <title> Daftar Report Barang & Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -127,6 +105,13 @@ if(isset($_POST['submit'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="login.php" class="nav-link">
+                <p>
+                  login
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -183,10 +168,40 @@ if(isset($_POST['submit'])){
             </a>
           </li>
           </ul>
-          <li class="nav-item">
-           <a href="report.php" class="nav-link active">
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
               <p>
-               Report
+                 Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="ReportBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="reportBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="pdf2.php" class="nav-link">
+              <p>
+               Semua Periode
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="reportSemua.php" class="nav-link">
+              <p>
+               Buku & Barang 
               </p>
             </a>
           </li>
@@ -203,8 +218,7 @@ if(isset($_POST['submit'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard Report</h1>
-            <a href="pdf2.php"><button class="btn btn-primary">Download</button></a>
+            <h1 class="m-0">Daftar Report Buku dan Barang</h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -220,15 +234,9 @@ if(isset($_POST['submit'])){
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="report.php" method="post" enctype="multipart/form-data">
+            <form action="pdf.php" method="post" enctype="multipart/form-data">
             <label for="title">Masukkan No Induk / nama Siswa</label>
             <input type="text" name="keyword" class="form-control " required>
-            <label for="">Report</label>
-            <select name="report" class="form-control">
-              <option value="Buku">Buku</option>
-              <option value="Barang">Barang</option>
-              <option value="semua">Buku & Barang</option>
-            </select>
             <label for="">Dari Tanggal</label>
             <input type="date" name="tanggalPinjam" class="form-control" required>
             <label for="">Sampai Tanggal</label>

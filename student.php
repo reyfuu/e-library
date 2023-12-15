@@ -131,6 +131,13 @@ if(!empty($_GET['status'])){
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="login.php" class="nav-link">
+                <p>
+                  login
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -187,10 +194,40 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           </ul>
-          <li class="nav-item">
-           <a href="report.php" class="nav-link active">
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
               <p>
-               Report
+                 Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="ReportBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="reportBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="pdf2.php" class="nav-link">
+              <p>
+               Semua Periode
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="reportSemua.php" class="nav-link">
+              <p>
+               Buku & Barang 
               </p>
             </a>
           </li>
@@ -237,15 +274,21 @@ if(!empty($_GET['status'])){
           <div class="card-body">
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
-                <td>No</td>
-                <td>No Induk</td>
-                <td>Nama </td>
-                <td>Kelas</td>
-                <td>Aksi</td>
+                <td><b>No</b></td>
+                <td><b>No Induk</b></td>
+                <td><b>Nama</b></td>
+                <td><b>Kelas</b></td>
+                <td><b>Aksi</b></td>
               </tr>
               <tr>
               <?php $i=1; ?>
-              <?php 
+              <?php
+                  $result1= mysqli_query($conn,"SELECT * FROM siswa WHERE status='available'");
+                  $jumlahData=mysqli_num_rows($result1);
+                  $jumlahDataPerHalaman=10;
+                  $jumlahHalaman= ceil( $jumlahData/$jumlahDataPerHalaman);
+                  $halamanAktif= (isset($_GET['halaman']) ? $_GET['halaman']: 1);
+                  $awalData= ($jumlahDataPerHalaman * $halamanAktif)-$jumlahDataPerHalaman; 
                  if(isset($_GET['cari'])){
                   $pencarian= $_GET['cari'];
                   $query="SELECT * FROM siswa WHERE
@@ -253,7 +296,7 @@ if(!empty($_GET['status'])){
                   nama LIKE '%$pencarian%' OR
                   kelas LIKE '%$pencarian%'  ";
                 }else{  
-                  $query= "SELECT * FROM siswa";
+                  $query= "SELECT * FROM siswa LIMIT $awalData,$jumlahDataPerHalaman";
                 }
                 $result=mysqli_query($conn,$query);
               while($row = mysqli_fetch_assoc($result)): ?>
@@ -272,8 +315,23 @@ if(!empty($_GET['status'])){
 
             </table>
           </div>
+         
         </div>
-
+        <div class="text-center">
+          <?php if($halamanAktif>1):?>
+            <a href="?halaman=<?= $halamanAktif-1?>">&laquo;</a>
+          <?php endif ?>
+           <?php for($i=1;$i<=$jumlahHalaman;$i++):?>
+               <?php if($i == $halamanAktif):?>
+              <a href="?halaman=<?= $i?>" style="font-weight:bold; color:red; text-decoration:none"><?= $i ?></a>
+              <?php else:?>
+                <a href="?halaman=<?= $i?>" ><?= $i ?></a>
+              <?php endif;?>
+            <?php endfor?>
+          <?php if($halamanAktif<1):?>
+            <a href="?halaman=<?= $halamanAktif+1?>">&raquo;</a>
+          <?php endif ?>
+        </div>
         </div>
 
        

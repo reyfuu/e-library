@@ -3,11 +3,13 @@
 require_once __DIR__ . '/vendor/autoload.php';
 include 'connect.php';
 
-
-    $pencarian=$_GET['keyword'];
+if(isset($_POST['submit'])){
+    $pencarian=$_POST['keyword'];
+    $tanggalKembali=$_POST['tanggalKembali'];
+    $tanggalPinjam=$_POST['tanggalPinjam'];
     $query="SELECT * FROM pinjam pj, pinjambuku pjbk 
     WHERE 
-
+    tanggalKembali BETWEEN $tanggalPinjam and $tanggalKembali AND
     pj.noInduk='$pencarian' AND
     pjbk.noInduk= '$pencarian' OR
     pj.idbarang ='$pencarian' OR
@@ -70,7 +72,7 @@ include 'connect.php';
                </tr>';
         }
         $html.= '</table>';
-        
+      }      
 $mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 $mpdf->SetHeader('<img src="Header.png"/>');
 $mpdf->WriteHTML($html);

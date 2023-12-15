@@ -8,7 +8,8 @@ include 'connect.php';
 
     $result=mysqli_query($conn,$query);
 
-
+    $html="
+    <h3>Daftar Peminjaman Buku dan Barang Semua Periode </h3>";
     $html.='<table border="1" cellpadding="10" cellspasing="0" 
           style=
           "border-collapse:collapse;

@@ -3,11 +3,13 @@
 require_once __DIR__ . '/vendor/autoload.php';
 include 'connect.php';
 
-
-    $pencarian=$_GET['keyword'];
+if(isset($_POST['submit'])){
+    $pencarian=$_POST['keyword'];
+    $tanggalKembali=$_POST['tanggalKembali'];
+    $tanggalPinjam=$_POST['tanggalPinjam'];
     $query="SELECT * FROM pinjam  
     WHERE 
-
+    tanggalKembali BETWEEN $tanggalPinjam and $tanggalKembali AND
     noInduk='$pencarian' OR
     idbarang ='$pencarian' OR
     namaBarang ='$pencarian' OR
@@ -26,7 +28,7 @@ include 'connect.php';
     while($row= mysqli_fetch_assoc($result1)){
         $html='
 
-        <h3>Daftar Peminjaman Buku dan Barang </h3>
+        <h3>Daftar Peminjaman Barang </h3>
 
         <h3>Nama   :'.$row['nama'].'</h3>
         <h3>Kelas  :'.$row['kelas'].'</h3>
@@ -65,7 +67,7 @@ include 'connect.php';
                </tr>';
         }
         $html.= '</table>';
-        
+      }   
 $mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 $mpdf->SetHeader('<img src="Header.png"/>');
 $mpdf->WriteHTML($html);

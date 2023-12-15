@@ -10,7 +10,7 @@ session_start();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Buku</title>
+  <title> Daftar Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -55,7 +55,7 @@ session_start();
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.php" class="brand-link">
+    <a href="dpBuku.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Sistem Peminjaman</span>
     </a>
@@ -112,7 +112,7 @@ session_start();
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard Buku</h1><br>
+            <h1 class="m-0">Daftar Buku</h1><br>
            <!-- Search form -->
             <div class="input-group">
               <form action="dpBuku.php" method="get"  class="d-flex">
@@ -141,16 +141,22 @@ session_start();
           <div class="card-body">
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
-                <td>No</td>
-                <td>Judul Buku</td>
-                <td>Nama Pengarang</td>
-                <td>Publikasi</td>
-                <td>Edisi</td>
-                <td>Aksi</td>
+                <td><b>No</b></td>
+                <td><b>Judul Buku</b></td>
+                <td><b>Nama Pengarang</b></td>
+                <td><b>Publikasi</b></td>
+                <td><b>Edisi</b></td>
+                <td><b>Aksi</b></td>
               </tr>
               <tr>
               <?php $i=1; ?>
               <?php 
+              $result1= mysqli_query($conn,"SELECT * FROM buku WHERE status='available'");
+              $jumlahData=mysqli_num_rows($result1);
+              $jumlahDataPerHalaman=10;
+              $jumlahHalaman= ceil( $jumlahData/$jumlahDataPerHalaman);
+              $halamanAktif= (isset($_GET['halaman']) ? $_GET['halaman']: 1);
+              $awalData= ($jumlahDataPerHalaman * $halamanAktif)-$jumlahDataPerHalaman;
               if(isset($_GET['cari'])){
                 $pencarian=$_GET['cari'];
                 $query= "SELECT * FROM buku 
@@ -161,7 +167,7 @@ session_start();
                 edisi LIKE '%$pencarian%' 
                 ";
               }else{
-                $query="SELECT * FROM buku WHERE status='available'";
+                $query="SELECT * FROM buku WHERE status='available' LIMIT $awalData,$jumlahDataPerHalaman";
               }
               
                 
@@ -184,7 +190,21 @@ session_start();
             </table>
           </div>
         </div>
-
+        <div class="text-center">
+          <?php if($halamanAktif>1):?>
+            <a href="?halaman=<?= $halamanAktif-1?>">&laquo;</a>
+          <?php endif ?>
+           <?php for($i=1;$i<=$jumlahHalaman;$i++):?>
+               <?php if($i == $halamanAktif):?>
+              <a href="?halaman=<?= $i?>" style="font-weight:bold; color:red; text-decoration:none"><?= $i ?></a>
+              <?php else:?>
+                <a href="?halaman=<?= $i?>" ><?= $i ?></a>
+              <?php endif;?>
+            <?php endfor?>
+          <?php if($halamanAktif<1):?>
+            <a href="?halaman=<?= $halamanAktif+1?>">&raquo;</a>
+          <?php endif ?>
+        </div>
         </div>
 
        

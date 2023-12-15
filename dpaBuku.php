@@ -8,7 +8,7 @@ include 'connect.php';
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Dashboard Barang</title>
+  <title> Daftar Pinjam Buku</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -109,6 +109,13 @@ include 'connect.php';
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="login.php" class="nav-link">
+                <p>
+                  login
+                </p>
+              </a>
+            </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">
@@ -165,10 +172,40 @@ include 'connect.php';
             </a>
           </li>
           </ul>
-          <li class="nav-item">
-           <a href="report.php" class="nav-link active">
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
               <p>
-               Report
+                 Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="ReportBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="reportBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="pdf2.php" class="nav-link">
+              <p>
+               Semua Periode
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="reportSemua.php" class="nav-link">
+              <p>
+               Buku & Barang 
               </p>
             </a>
           </li>
@@ -186,7 +223,7 @@ include 'connect.php';
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0">Dashboard Pinjam Buku</h1><br>
+            <h1 class="m-0">Daftar Pinjam Buku</h1><br>
            <!-- Search form -->
             <div class="input-group">
               <form action="dpaBuku.php" method="get"  class="d-flex">
@@ -215,17 +252,23 @@ include 'connect.php';
           <div class="card-body">
             <table border="1" cellpadding="10" class="table table-bordered table-hover" id="table">
               <tr>
-                <td>No</td>
-                <td>No Induk</td>
-                <td>Nama Buku</td>
-                <td>Nama Siswa</td>
-                <td>Tanggal Pinjam</td>
-                <td>Tanggal Kembali</td>
-                <td>Aksi</td>
+                <td><b>No</b></td>
+                <td><b>No Induk</b></td>
+                <td><b>Nama Buku</b></td>
+                <td><b>Nama Siswa</b></td>
+                <td><b>Tanggal Pinjam</b></td>
+                <td><b>Tanggal Kembali</b></td>
+                <td><b>Aksi</b></td>
               </tr>
               <tr>
               <?php $i=1; ?>
               <?php 
+                  $result1= mysqli_query($conn,"SELECT * FROM pinjambuku WHERE status='pinjam'");
+                  $jumlahData=mysqli_num_rows($result1);
+                  $jumlahDataPerHalaman=10;
+                  $jumlahHalaman= ceil( $jumlahData/$jumlahDataPerHalaman);
+                  $halamanAktif= (isset($_GET['halaman']) ? $_GET['halaman']: 1);
+                  $awalData= ($jumlahDataPerHalaman * $halamanAktif)-$jumlahDataPerHalaman;
                  if(isset($_GET['cari'])){
                   $pencarian= $_GET['cari'];
                   $query="SELECT * FROM pinjambuku WHERE
@@ -237,7 +280,7 @@ include 'connect.php';
                   tanggalpinjam LIKE '%$pencarian%' OR
                   tanggalkembali LIKE '%$pencarian%' ";
                 }else{  
-                  $query= "SELECT * FROM pinjambuku";
+                  $query= "SELECT * FROM pinjambuku WHERE status='pinjam' LIMIT $awalData,$jumlahDataPerHalaman ";
                 }
                 $result=mysqli_query($conn,$query);
               while($row = mysqli_fetch_assoc($result)): ?>
@@ -261,7 +304,21 @@ include 'connect.php';
             </table>
           </div>
         </div>
-
+        <div class="text-center">
+          <?php if($halamanAktif>1):?>
+            <a href="?halaman=<?= $halamanAktif-1?>">&laquo;</a>
+          <?php endif ?>
+           <?php for($i=1;$i<=$jumlahHalaman;$i++):?>
+               <?php if($i == $halamanAktif):?>
+              <a href="?halaman=<?= $i?>" style="font-weight:bold; color:red; text-decoration:none"><?= $i ?></a>
+              <?php else:?>
+                <a href="?halaman=<?= $i?>" ><?= $i ?></a>
+              <?php endif;?>
+            <?php endfor?>
+          <?php if($halamanAktif<1):?>
+            <a href="?halaman=<?= $halamanAktif+1?>">&raquo;</a>
+          <?php endif ?>
+        </div>
 
         <br>
         <!-- Small boxes (Stat box) -->

@@ -3,10 +3,10 @@
 require_once __DIR__ . '/vendor/autoload.php';
 include 'connect.php';
 
-
-    $pencarian=$_GET['keyword'];
-    $tanggalPinjam=$_GET['tanggalPinjam'];
-    $tanggalKembali=$_GET['tanggalKembali'];
+if(isset($_POST['submit'])){
+    $pencarian=$_POST['keyword'];
+    $tanggalPinjam=$_POST['tanggalPinjam'];
+    $tanggalKembali=$_POST['tanggalKembali'];
     $query="SELECT * FROM pinjamBuku  
     WHERE 
 
@@ -29,7 +29,7 @@ include 'connect.php';
     while($row= mysqli_fetch_assoc($result1)){
         $html='
 
-        <h3>Daftar Peminjaman Buku dan Barang </h3>
+        <h3>Daftar Peminjaman Buku </h3>
 
         <h3>Nama   :'.$row['nama'].'</h3>
         <h3>Kelas  :'.$row['kelas'].'</h3>
@@ -68,7 +68,7 @@ include 'connect.php';
                </tr>';
         }
         $html.= '</table>';
-        
+      }     
 $mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 $mpdf->SetHeader('<img src="Header.png"/>');
 $mpdf->WriteHTML($html);
