@@ -292,7 +292,8 @@ if(isset($_POST['submit'])){
             <h1 class="m-0">Add Barang</h1>
             <br>
             <a href="abarang.php"><button class="btn btn-primary">Tambah</button></a>
-            <a href="barang.xlsx" download><button class="btn btn-success" >Download</button></a>
+            <a href="barang.xlsx" download><button class="btn btn-success" >Download template</button></a>
+            <a href="excelBarang.php"><button class="btn btn-success" >Export to Excel</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
