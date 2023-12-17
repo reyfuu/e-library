@@ -44,7 +44,9 @@ include 'connect.php';
                  <td>'.$row['tanggalkembali'].'&' .$row['tanggalKembali'].'</td>
                </tr>';
         }
-        $html.= '</table>';
+        $html.= 
+        '</table>
+        <p style="text-align: right">mengetahui K3 Teknik komputer dan jaringan</p>';
         
 $mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 $mpdf->SetHeader('<img src="Header.png"/>');
