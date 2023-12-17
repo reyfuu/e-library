@@ -225,7 +225,7 @@ if(!empty($_GET['status'])){
             </a>
           </li>
           <li class="nav-item">
-           <a href="reportSemua.php" class="nav-link">
+           <a href="report.php" class="nav-link">
               <p>
                Buku & Barang 
               </p>

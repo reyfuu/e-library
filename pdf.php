@@ -9,7 +9,7 @@ if(isset($_POST['submit'])){
     $tanggalPinjam=$_POST['tanggalPinjam'];
     $query="SELECT * FROM pinjam pj, pinjambuku pjbk 
     WHERE 
-    tanggalKembali BETWEEN $tanggalPinjam and $tanggalKembali AND
+    pj.tanggalKembali BETWEEN $tanggalPinjam and $tanggalKembali AND
     pj.noInduk='$pencarian' AND
     pjbk.noInduk= '$pencarian' OR
     pj.idbarang ='$pencarian' OR
