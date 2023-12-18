@@ -1,41 +1,22 @@
 <?php
 
 include 'connect.php';
-
-$id=$_GET['id'];
+session_start();
 
 if(isset($_POST['submit'])){
 
-    $idPinjam=$_POST['idPinjam'];
-    $date=$_POST['date'];
-    $status= $_POST['status'];
-    $stok=1;
+    $username=$_POST['siswa'];
+    $password=$_POST['password'];
 
-    $result1=mysqli_query($conn,"SELECT idBuku,stok FROM pinjamBuku WHERE idPinjam='$idPinjam' ");
-
-    while($row1=mysqli_fetch_assoc($result1)){
-      $idBukuTemp=$row1['idBuku'];
-      $stokTemp=$row1['stok'];
-    }
-    try{
-      $result= mysqli_query($conn, "UPDATE pinjambuku SET tanggalKembali='$date',status='$status'  WHERE idpinjam='$idPinjam'");
-
-    }catch (mysqli_sql_exception $e){
-      var_dump($e);
-      exit;
-    }
-
-    $stok+=intval($stokTemp);
-   
-
+    $result= mysqli_query($conn, "UPDATE login SET password='$password' WHERE username='$username'");
     $check= mysqli_affected_rows($conn);
     if($check> 0){
-        mysqli_query($conn, "UPDATE buku SET status='available',stok='$stok'  WHERE idBuku='$idBukuTemp'");
-        header("Location:dpaBuku.php");
-    }
+
+        header("Location:index.php");
+      }
     else{
         echo "<script>
-            alert('data gagal di update');
+            alert('username / password yang anda masukkan salah');
         </script>";
     }
 
@@ -50,7 +31,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Update Buku</title>
+  <title>Lupa Password</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -65,32 +46,44 @@ if(isset($_POST['submit'])){
 <div class="login-box">
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
-
+    <div class="card-header text-center">
+      <b>Reset Password</b>
+    </div>
     <div class="card-body">
-   
-
-      <form action="dpuBuku.php" method="post">
-      <input type="hidden" name="idPinjam" value="<?= $id ?>">
-       
-          
-          <label for="title">Tanggal Kembali</label>
-          <input type="date" class="form-control"  name="date" required>
-          <label for="">Status</label>
-          <input type="text" class="form-control" name="status" required>
-
+   <?php 
+    $query='SELECT username FROM login ';
+    $result=mysqli_query($conn,$query);
+   ?>
+  
+      <form action="lupa.php" method="post">
+        <div class="input-group mb-3">
+          <select name="siswa" class="form-control">
+            <?php while($row=mysqli_fetch_assoc($result)): ?>
+                <option value="<?= $row['username'] ;?>"><?= $row['username'] ;?></option>
+            <?php endwhile ?>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" name="password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
         </div>
         <div class="row">
 
           <!-- /.col -->
           <div class="container">
-            <button type="submit" class="btn btn-primary btn-block" name="submit">Submit</button>
+            <button type="submit" class="btn btn-primary btn-block" name="submit">Sign In</button>
           </div>
+          <br>
+
           <!-- /.col -->
         </div>
       </form>
 
-
-      <!-- /.social-auth-links -->
+  <br>
 
 
     </div>

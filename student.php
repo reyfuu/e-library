@@ -283,7 +283,7 @@ if(!empty($_GET['status'])){
               <tr>
               <?php $i=1; ?>
               <?php
-                  $result1= mysqli_query($conn,"SELECT * FROM siswa WHERE status='available'");
+                  $result1= mysqli_query($conn,"SELECT * FROM siswa ");
                   $jumlahData=mysqli_num_rows($result1);
                   $jumlahDataPerHalaman=10;
                   $jumlahHalaman= ceil( $jumlahData/$jumlahDataPerHalaman);

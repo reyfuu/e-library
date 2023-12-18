@@ -91,7 +91,7 @@ if(isset($_POST['submit'])){
   <br>
       <a href="signup.php">Belum punya akun</a>
       <!-- /.social-auth-links -->
-
+      <a href="lupa.php">Lupa Password</a>
 
     </div>
     <!-- /.card-body -->
