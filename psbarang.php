@@ -199,7 +199,7 @@ try{
             <form action="psbarang.php" method="post">
               <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Nama Barang</label>
-            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required disabled>
+            <input type="text" name="namaBarang" class="form-control my-3 py-2" value="<?= $row['namabarang'] ?>" required readonly>
             <label for="">Stok</label>
             <input type="number" name="stok" class="form-control my-3 py-2" required>
             <label for="title">Tanggal</label>

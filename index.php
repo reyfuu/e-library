@@ -90,7 +90,7 @@ if(isset($_POST['submit'])){
       </form>
   <br>
       <a href="signup.php">Belum punya akun</a>
-      <!-- /.social-auth-links -->
+      <!-- /.social-auth-links -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a href="lupa.php">Lupa Password</a>
 
     </div>

@@ -296,10 +296,10 @@ if(!empty($_GET['status'])){
                 $query="SELECT * FROM buku 
                 WHERE 
                 idBuku LIKE '%$pencarian%' OR
+                judul LIKE '%$pencarian%' OR
                 nama LIKE '%$pencarian%' OR
                 publikasi LIKE '%$pencarian%' OR
-                edisi LIKE '%$pencarian%' OR
-                status LIKE '%$pencarian%'";
+                edisi LIKE '%$pencarian%' ";
               }else{
                 $query= "SELECT * FROM buku WHERE status='available' LIMIT $awalData,$jumlahDataPerHalaman";
               }

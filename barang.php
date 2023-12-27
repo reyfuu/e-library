@@ -292,8 +292,7 @@ if(!empty($_GET['status'])){
                 $query="SELECT * FROM barang 
                 WHERE 
                 idbarang LIKE '%$pencarian%' OR
-                namabarang LIKE '%$pencarian%' OR
-                status LIKE '%$pencarian%'";
+                namabarang LIKE '%$pencarian%' ";
               }else{
                 $query= "SELECT * FROM barang WHERE status='available' LIMIT $awalData,$jumlahDataPerHalaman";
               }

@@ -201,7 +201,7 @@ try{
             <form action="psbuku.php" method="post">
             <?php while($row= mysqli_fetch_assoc($result)): ?>
             <label for="title">Judul</label>
-            <input type="text" name="judul" class="form-control my-3 py-2" value="<?= $row['judul']; ?>" required disabled>
+            <input type="text" name="judul" class="form-control my-3 py-2" value="<?= $row['judul']; ?>" readonly required>
             <label for="title">Tanggal</label>
             <input type="date" name="date" class="form-control my-3 py-2" required>
             <div class="text-center">
