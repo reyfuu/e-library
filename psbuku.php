@@ -108,11 +108,23 @@ try{
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-
-
     </ul>
-
-
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-user"></i>
+        </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <p class="dropdown-item">Admin</p>
+        <a href="index.php" class="dropdown-item">
+          Logout
+          <i class="fas fa-sign-out" ></i>
+        </a>
+      </div>
+      </li>
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -127,13 +139,6 @@ try{
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
-        <div class="info">
-          <a href="dpBuku.php" class="d-block"><?= $_SESSION['siswa']; ?></a>
-        </div>
-      </div>
-
 
 
       <!-- Sidebar Menu -->
@@ -141,34 +146,142 @@ try{
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
-        
           <li class="nav-item menu-open">
-          <a  class="nav-link active">
-             
+            <a href="dashboard.php" class="nav-link active">
               <p>
                  Dashboard
+              </p>
+            </a>
+         </li>
+        <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Update dan Delete
                 <i class="right fas fa-angle-left"></i>
               </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="dpBarang.php" class="nav-link">
+              <a href="barang.php" class="nav-link">
                 <p>
                   Barang
                 </p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="dpBuku.php" class="nav-link">
+              <a href="buku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="student.php" class="nav-link">
+                <p>
+                  Siswa
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="login.php" class="nav-link">
+                <p>
+                  login
+                </p>
+              </a>
+            </li>
           </ul>
-
-
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Tambah
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="add.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="sadd.php" class="nav-link">
+              <p>
+               Siswa
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="badd.php" class="nav-link">
+              <p>
+               Barang
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Pinjam
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="dpaBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="dpaBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          </ul>
+          <li class="nav-item menu-open">
+          <a  class="nav-link active">
+              <p>
+                 Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="ReportBuku.php" class="nav-link">
+                <p>
+                  Buku
+                </p>
+              </a>
+            </li>
+          </li>
+          <li class="nav-item">
+           <a href="reportBarang.php" class="nav-link">
+              <p>
+               Barang 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="pdf2.php" class="nav-link">
+              <p>
+               Semua Periode
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="report.php" class="nav-link">
+              <p>
+               Buku & Barang 
+              </p>
+            </a>
+          </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

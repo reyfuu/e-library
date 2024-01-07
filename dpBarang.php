@@ -48,6 +48,23 @@ session_start();
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
     </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+      <!-- Messages Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-user"></i>
+        </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <p class="dropdown-item"><?= $_SESSION['siswa']; ?></p>
+        <a href="logout.php" class="dropdown-item">
+          Logout
+          <i class="fas fa-sign-out"></i>
+        </a>
+      </div>
+      </li>
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -62,12 +79,7 @@ session_start();
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
-        <div class="info">
-          <a href="dpBuku.php" class="d-block"><?= $_SESSION['siswa']; ?></a>
-        </div>
-      </div>
+ 
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">

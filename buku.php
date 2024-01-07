@@ -55,9 +55,9 @@ if(!empty($_GET['status'])){
 <div class="wrapper">
 
   <!-- Preloader --> 
-  <!-- <div class="preloader flex-column justify-content-center align-items-center">
+  <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div> -->
+  </div>
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -65,6 +65,22 @@ if(!empty($_GET['status'])){
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-user"></i>
+        </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <p class="dropdown-item">Admin</p>
+        <a href="index.php" class="dropdown-item">
+          Logout
+          <i class="fas fa-sign-out" ></i>
+        </a>
+      </div>
       </li>
     </ul>
   </nav>
@@ -81,12 +97,7 @@ if(!empty($_GET['status'])){
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
-        <div class="info">
-          <a href="dashboard.php" class="d-block">Admin</a>
-        </div>
-      </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
