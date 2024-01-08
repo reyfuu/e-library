@@ -143,7 +143,7 @@ if(!empty($_GET['status'])){
             <li class="nav-item">
               <a href="login.php" class="nav-link">
                 <p>
-                  login
+                  Login
                 </p>
               </a>
             </li>
@@ -175,6 +175,13 @@ if(!empty($_GET['status'])){
            <a href="badd.php" class="nav-link">
               <p>
                Barang
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+           <a href="ladd.php" class="nav-link">
+              <p>
+               Login
               </p>
             </a>
           </li>

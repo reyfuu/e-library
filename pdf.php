@@ -76,7 +76,7 @@ if(isset($_POST['submit'])){
         <p style="text-align: right">mengetahui K3 Teknik komputer dan jaringan</p>';
       }      
 $mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
-$mpdf->SetHeader('<img src="Header.png"/>');
+$mpdf->SetHeader('<img src="Header.jpg"/>');
 $mpdf->WriteHTML($html);
 $mpdf->Output();
 

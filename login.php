@@ -178,6 +178,13 @@ if(!empty($_GET['status'])){
               </p>
             </a>
           </li>
+          <li class="nav-item">
+           <a href="ladd.php" class="nav-link">
+              <p>
+               Login
+              </p>
+            </a>
+          </li>
           </ul>
           <li class="nav-item menu-open">
           <a  class="nav-link active">

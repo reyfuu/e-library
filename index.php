@@ -6,18 +6,22 @@ session_start();
 if(isset($_POST['submit'])){
 
     $username=$_POST['username'];
-    $password=$_POST['password'];
+    $userpass=$_POST['password'];
 
-    $result= mysqli_query($conn, "select* from login where username='$username' and password='$password'");
+   $sql= mysqli_query($conn,"SELECT * FROM login WHERE username='$username'");
 
-    $check= mysqli_num_rows($result);
-    if($check> 0){
+
+    if(mysqli_num_rows($sql) === 1){
+      $row=mysqli_fetch_assoc($sql);
+      if(password_verify($userpass,$row["password"])){
+              
       if($username=="admin"){
         header("Location:dashboard.php");
       }
       else{
         $_SESSION['siswa']=$username;
         header("Location:dpBuku.php");
+      }
       }
 
 

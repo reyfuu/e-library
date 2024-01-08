@@ -1,10 +1,65 @@
+<?php 
 
+include 'connect.php';
+
+include 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
+if(isset($_POST['submit'])){
+  $excelMimes = array('text/xls', 'text/xlsx', 'application/excel', 'application/vnd.msexcel', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); 
+
+  if(!empty($_FILES['file']['name']) && in_array($_FILES['file']['type'], $excelMimes)){
+
+    if(is_uploaded_file($_FILES['file']['tmp_name'])){
+
+      $reader= new  Xlsx();
+      $spreadsheet= $reader->load($_FILES['file']['tmp_name']);
+      $worksheet = $spreadsheet->getActiveSheet();
+      
+      $worksheet_arr= $worksheet->toArray();
+
+      unset($worksheet_arr[0]);
+
+      foreach($worksheet_arr as $row){
+
+
+        $username=$row[0];
+
+        $password='$2a$12$J8jvFjSMAbSozNhxYFDq4u9C9X/m0lZ38.f1uccCjrRVn6nXOBvb6';
+
+        
+        $prevQuery="SELECT username FROM login WHERE username='$username'";
+        $prevResult= $conn->query($prevQuery);
+
+        if($prevResult->num_rows>0){
+          $conn->query("UPDATE login SET username='$username' 
+          WHERE username='$username' ");
+        }else{
+          mysqli_query($conn,"INSERT INTO `login` (`username`,`password`) 
+          VALUES ('$username','$password')");
+        }
+      }
+      $qstring='?status=succ';
+    }else{
+      $qstring='?status=err';
+    }
+  }else{
+    $qstring='?status=invalid_file';
+  }
+
+  header("Location: login.php".$qstring);
+  
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Daftar Report Barang & Buku</title>
+  <title> Add User</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,7 +85,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader --> 
+  <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
@@ -236,7 +291,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Daftar Report Buku dan Barang</h1>
+            <h1 class="m-0">Add User</h1>
+            <br>
+            <a href="alogin.php"><button class="btn btn-primary">Tambah</button></a>
+            <a href="login.xlsx" download><button class="btn btn-success" >Download Template</button></a>
+            <a href="excelLogin.php"><button class="btn btn-info" >Export to Excel</button></a>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -252,13 +311,9 @@
           <div class="container">
           <div class="card">
             <div class="card-body">
-            <form action="pdf.php" method="post" enctype="multipart/form-data">
-            <label for="title">Masukkan No Induk / nama Siswa</label>
-            <input type="text" name="keyword" class="form-control " required>
-            <label for="">Dari Tanggal</label>
-            <input type="date" name="tanggalPinjam" class="form-control" required>
-            <label for="">Sampai Tanggal</label>
-            <input type="date" name="tanggalKembali" class="form-control" required>
+            <form action="ladd.php" method="post" enctype="multipart/form-data">
+            <label for="title">Import excel file</label>
+            <input type="file" name="file" class="form-control " required>
             <div class="text-center">
             <button type="submit" name="submit" value="submit" class="btn btn-dark">Submit</button>
             </div>
@@ -269,17 +324,13 @@
  
           </div>
         </div>
-        <!-- Small boxes (Stat box) -->
-
 
        
 <!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 <!-- jQuery UI 1.11.4 -->
-
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
@@ -292,7 +343,8 @@
 <!-- Sparkline -->
 <script src="plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -310,6 +362,5 @@
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-
 </body>
 </html>
