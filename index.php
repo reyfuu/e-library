@@ -13,7 +13,6 @@ if(isset($_POST['submit'])){
 
     if(mysqli_num_rows($sql) === 1){
       $row=mysqli_fetch_assoc($sql);
-      if(password_verify($userpass,$row["password"])){
               
       if($username=="admin"){
         header("Location:dashboard.php");
@@ -33,7 +32,6 @@ if(isset($_POST['submit'])){
     }
 
 
-} 
 
 
 

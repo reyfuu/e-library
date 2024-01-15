@@ -235,7 +235,7 @@ try{
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="ReportBuku.php" class="nav-link">
+              <a href="reportBuku.php" class="nav-link">
                 <p>
                   Buku
                 </p>
